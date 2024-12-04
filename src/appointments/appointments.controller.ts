@@ -7,8 +7,7 @@ import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
 @Controller('appointments')
 export class AppointmentsController {
   appointmentModel: any;
-  constructor(private readonly appointmentsService: AppointmentsService,
-  ) 
+  constructor(private readonly appointmentsService: AppointmentsService,) 
   {}
 
   @Post('create')

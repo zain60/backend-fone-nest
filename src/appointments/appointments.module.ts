@@ -14,7 +14,6 @@ import { AuthModule } from 'src/auth/auth.module';
   providers: [AppointmentsService,tenantConnectionProvider,
     tenantModels.appointmentModel
   ],
-  // exports: [AppointmentsService],
   imports: [
     TenantsModule,
     AuthModule,

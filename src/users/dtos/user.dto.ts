@@ -10,6 +10,9 @@ export class UserDto {
   @IsNotEmpty()
   email: string;
 
+  @IsNotEmpty()
+  phoneNumber: string;
+
   @IsString()
   @IsNotEmpty()
   @MinLength(6)

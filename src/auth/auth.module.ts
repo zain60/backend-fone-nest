@@ -8,7 +8,6 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    UsersModule,
     ConfigModule,
     JwtModule.register({
       secret: 'your-secret-key',

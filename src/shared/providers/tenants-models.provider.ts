@@ -10,7 +10,6 @@ export const tenantModels = {
     },
     inject: ['TENANT_CONNECTION'],
   },
-
   userModel: {
     provide: 'USERS_MODEL',
     useFactory: async (tenantConnection: Connection) => {
@@ -18,7 +17,6 @@ export const tenantModels = {
     },
     inject: ['TENANT_CONNECTION'],
   },
-
   contactModel: {
     provide: 'CONTACT_MODEL',
     useFactory: async (tenantConnection: Connection) => {

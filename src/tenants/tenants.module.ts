@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Tenant, TenantSchema } from './schemas/tenant.schema';
 import { TenantsService } from './tenants.service';
-import { UsersModule } from 'src/users/users.module';
 import { TenantsController } from './tenants.controller';
 import { tenantConnectionProvider } from 'src/shared/providers/tenants-connection.provider';
 import { AuthModule } from 'src/auth/auth.module';
