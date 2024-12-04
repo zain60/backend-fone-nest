@@ -3,14 +3,13 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class CreateTenantDto {
     @IsString()
     @IsNotEmpty()
-    tenant_name: string;
-
-
-    @IsString()
-    @IsNotEmpty()
-    tenant_id: string;
+    tenantName: string;
 
     @IsString()
     @IsNotEmpty()
-    database_name:string
+    tenantId: string;
+
+    @IsString()
+    @IsNotEmpty()
+    databaseName:string
 }

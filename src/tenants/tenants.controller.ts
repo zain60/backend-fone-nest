@@ -9,13 +9,7 @@ export class TenantsController {
 
   @Post('create-company')
   async createCompany(
-    @Body('companyName') companyName: string,
-    @Body('user') user: UserDto
-  ) {
-    const companyData = {
-      companyName,
-      user
-    };
+    @Body() companyData: CreateCompanyDto) {
     return await this.tenantService.createCompany(companyData);
   }
 }

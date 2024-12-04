@@ -2,7 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { decrypt, encrypt } from 'src/utils/utils.service';
 import { ConfigService } from '@nestjs/config';
-import { TenantConnectionService } from 'src/services/tenant-connection.service';
+import { TenantsConnectionService } from '../shared/services/tenants-connection.service';
 import { Secrets, SecretsSchema } from './schemas/secrets.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -13,8 +13,8 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
-    private configService: ConfigService,
-    private tenantConnectionService: TenantConnectionService,
+    // private configService: ConfigService,
+    private tenantConnectionService: TenantsConnectionService,
     private jwtService: JwtService,
     private usersService: UsersService,
 
@@ -70,7 +70,6 @@ export class AuthService {
     await SecretsModel.create({ jwtSecret: encryptedSecret });
 
   }
-
 
   async fetchAccessTokenSecretSigningKey(tenantId: string) {
     const SecretsModel = await this.tenantConnectionService.getTenantModel(

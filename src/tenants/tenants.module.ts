@@ -10,7 +10,6 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   imports: [
     AuthModule,
-    UsersModule,
     MongooseModule.forFeature([{ name: Tenant.name, schema: TenantSchema }])
   ],
   providers: [TenantsService,tenantConnectionProvider],
