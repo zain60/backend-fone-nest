@@ -9,9 +9,13 @@ import { UserTenantsService } from 'src/user-tenants/user-tenants.service';
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<User>,
-        // private userTenantService: UserTenantsService
-    ) { }
+       
+    ) {
 
+    }
+      private userTenantService: UserTenantsService
+    
+    
     async getUsersByEmail(email: string) {
         return this.userModel.findOne({ email });
 
@@ -22,7 +26,7 @@ export class UsersService {
             ...user,
             tenantId
         });
-        // await this.userTenantService.createUserTenanat(user.name, tenantId)
+        await this.userTenantService.createUserTenanat(user.name, tenantId)
         return response
     }
 }

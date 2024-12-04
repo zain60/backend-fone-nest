@@ -9,11 +9,9 @@ import { JwtService } from '@nestjs/jwt';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService,
-    private authService: AuthService,
-    private jwtService: JwtService,
-  ) { }
-
+  constructor(private readonly usersService: UsersService) { }
+  private jwtService: JwtService
+  private authService: AuthService
 
 
   @Post('signup')
@@ -22,7 +20,6 @@ export class UsersController {
     const user = this.usersService.getUsersByEmail(email)
     if (user) throw new BadRequestException('Email already exists');
     const tenantId = uuidv4();
-    await this.authService.createSecretKeyForNewTenant(tenantId);
     const response = await this.usersService.createUser(userData, tenantId)
     //Fetch tenant specific secret key
     const secretKey = await this.authService.fetchAccessTokenSecretSigningKey(
