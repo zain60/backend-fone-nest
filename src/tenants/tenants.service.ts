@@ -37,5 +37,6 @@ export class TenantsService {
   async getCompanyByName(companyName: string) {
     return await this.tenantModel.findOne({ companyName });
   }
-
 }
+
+
