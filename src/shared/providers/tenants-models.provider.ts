@@ -11,8 +11,16 @@ export const tenantModels = {
     inject: ['TENANT_CONNECTION'],
   },
 
-  usersModel: {
+  userModel: {
     provide: 'USERS_MODEL',
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(User.name,UserSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+
+  contactModel: {
+    provide: 'CONTACT_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(User.name,UserSchema);
     },

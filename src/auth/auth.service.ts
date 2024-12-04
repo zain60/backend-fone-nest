@@ -9,6 +9,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dtos/login.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { SignUpDto } from './dtos/signup.dto';
 
 @Injectable()
 export class AuthService {
@@ -47,6 +48,10 @@ export class AuthService {
     );
 
     return { accessToken, tenantId: user.tenantId };
+  }
+
+  async register(regsiterData:SignUpDto){
+    
   }
 
   async createSecretKeyForNewTenant(tenantId: string) {

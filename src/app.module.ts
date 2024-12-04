@@ -7,10 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { TenantsModule } from './tenants/tenants.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { UsersModule } from './users/users.module';
+import { ContactsModule } from './contacts/contacts.module';
 
 @Module({
   imports: [
-    AppointmentsModule,
     ConfigModule.forRoot({
     isGlobal: true,
     cache: true,
@@ -32,10 +32,11 @@ import { UsersModule } from './users/users.module';
     }),
     inject: [ConfigService],
   }),
-  UsersModule,
+  AppointmentsModule,
   AuthModule,
   TenantsModule,
   UsersModule,
+  ContactsModule,
 ],
   controllers: [],
   providers: [],
