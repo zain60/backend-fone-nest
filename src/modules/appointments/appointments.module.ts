@@ -4,10 +4,10 @@ import { AppointmentsController } from './appointments.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Appointment, AppointmentSchema } from './appointments.schema';
 import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
-import { TenantsModule } from 'src/tenants/tenants.module';
+import { TenantsModule } from 'src/modules/tenants/tenants.module';
 import { tenantConnectionProvider } from 'src/shared/providers/tenants-connection.provider';
 import { tenantModels } from 'src/shared/providers/tenants-models.provider';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
 
 @Module({
   controllers: [AppointmentsController],

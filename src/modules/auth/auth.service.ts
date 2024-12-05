@@ -2,12 +2,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { decrypt, encrypt } from 'src/utils/utils.service';
 import { ConfigService } from '@nestjs/config';
-import { TenantsConnectionService } from '../shared/services/tenants-connection.service';
+import { TenantsConnectionService } from '../../shared/services/tenants-connection.service';
 import { Secrets, SecretsSchema } from './schemas/secrets.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from './dtos/login.dto';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from 'src/modules/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { SignUpDto } from './dtos/signup.dto';
 

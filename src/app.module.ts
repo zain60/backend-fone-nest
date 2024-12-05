@@ -2,12 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule,ConfigService } from '@nestjs/config';
 import config from './config/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
-import { TenantsModule } from './tenants/tenants.module';
-import { AppointmentsModule } from './appointments/appointments.module';
-import { UsersModule } from './users/users.module';
-import { ContactsModule } from './contacts/contacts.module';
+import { TenantsModule } from './modules/tenants/tenants.module';
+import { AppointmentsModule } from './modules/appointments/appointments.module';
+import { UsersModule } from './modules/users/users.module';
+import { ContactsModule } from './modules/contacts/contacts.module';
 
 @Module({
   imports: [

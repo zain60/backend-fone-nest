@@ -9,7 +9,7 @@ import {
   import { Reflector } from '@nestjs/core';
   import { JwtService } from '@nestjs/jwt';
   import { Request } from 'express';
-  import { AuthService } from 'src/auth/auth.service';
+  import { AuthService } from 'src/modules/auth/auth.service';
   
   //Make sure to apply the TenantsMiddleware to any tenant Auth guarded route
   @Injectable()
