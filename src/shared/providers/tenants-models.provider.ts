@@ -1,6 +1,7 @@
 
 import { Connection } from 'mongoose';
 import { Appointment, AppointmentSchema } from 'src/appointments/appointments.schema';
+import { Contact, ContactSchema } from 'src/contacts/schemas/contacts.schema';
 import { User, UserSchema } from 'src/users/user.schema';
 export const tenantModels = {
   appointmentModel: {
@@ -20,7 +21,7 @@ export const tenantModels = {
   contactModel: {
     provide: 'CONTACT_MODEL',
     useFactory: async (tenantConnection: Connection) => {
-      return tenantConnection.model(User.name,UserSchema);
+      return tenantConnection.model(Contact.name,ContactSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

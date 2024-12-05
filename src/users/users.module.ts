@@ -7,11 +7,15 @@ import { tenantConnectionProvider } from 'src/shared/providers/tenants-connectio
 import { tenantModels } from 'src/shared/providers/tenants-models.provider';
 import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
 import { TenantsModule } from 'src/tenants/tenants.module';
+import { AuthModule } from 'src/auth/auth.module';
+import { JwtModule } from '@nestjs/jwt';
 
 
 @Module({
   imports: [
     TenantsModule,
+    AuthModule,
+    JwtModule,
     MongooseModule.forFeature([
     {
       name: User.name,

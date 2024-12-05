@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { ContactDto } from './dtos/contact.dto';
-
+import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
+@UseGuards(TenantAuthenticationGuard)
 @Controller('contacts')
 export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {
@@ -19,8 +20,9 @@ export class ContactsController {
     }
   
     @Post()
-    async create(@Body() contactData: ContactDto) {
-      return this.contactsService.create(contactData);
+    async create( @Req()request: Request, @Body() contactData: ContactDto) {
+      const tenandId = request.headers['x-tenant-id']?.toString()
+      return this.contactsService.create(contactData,tenandId);
     }
   
      @Put(':id')

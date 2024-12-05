@@ -3,10 +3,16 @@ import { User } from './user.schema';
 import { Model } from 'mongoose';
 import { UserDto } from './dtos/user.dto';
 import * as bcrypt from 'bcrypt';
+import { AuthService } from 'src/auth/auth.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
-    constructor(@Inject('USERS_MODEL') private userModel: Model<User>) { }
+    constructor(@Inject('USERS_MODEL') private userModel: Model<User>,
+    private authService: AuthService,
+    private jwtService: JwtService,
+
+) { }
 
     async getUsersByEmail(email: string) {
         return this.userModel.findOne({ email });
@@ -26,4 +32,16 @@ export class UsersService {
         });
         return response;
     }
-}
+
+    async loginUser(email: string, password: string) {
+        const user = await this.getUsersByEmail(email);
+        if (!user) throw new BadRequestException('User does not exist');
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) throw new BadRequestException('Invalid password');
+        const secretKey = await this.authService.fetchAccessTokenSecretSigningKey(user.tenantId);
+        const accessToken = this.jwtService.sign(
+            { userId: user._id.toString() },
+            { secret: secretKey, expiresIn: '10h' }
+        );
+        return { user, accessToken };
+    }}

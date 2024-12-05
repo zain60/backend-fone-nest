@@ -15,9 +15,13 @@ export class ContactsService {
         return this.contactModel.findById(id).exec();
       }
 
-      async create( contactData: ContactDto): Promise<Contact> {
-        const createdContact = new this.contactModel(contactData);
-        return createdContact.save();
+      async create( contactData: ContactDto,tenantId: string): Promise<Contact> {
+        const createdContact = new this.contactModel({
+          ...contactData,
+          tenantId,
+      });
+        await createdContact.save();
+        return createdContact;
       }
 
       async update(id: string, contactData: ContactDto): Promise<Contact> {

@@ -15,11 +15,11 @@ export class Contact {
   @Prop({ required: true })
   number: string;
 
-  @Prop({ type: [String], default: [] })
-  list: string[];
+  @Prop({ required: true })
+  listId: string;
 
-  @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
-  userId: Types.ObjectId;
+  @Prop({ required: true })
+  tenantId: string;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
