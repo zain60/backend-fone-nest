@@ -1,14 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateRecordingDto } from './dto/create-recording.dto';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Recording } from './schemas/recording.schema';
 
 @Injectable()
 export class RecordingsService {
   constructor(@Inject('RECORDING_MODEL') private recordingModel: Model<Recording>) {}
 
-  async create(recordingData: CreateRecordingDto) {
-    const createdRecording =  new this.recordingModel(recordingData);
+  async create(tenandId:string,recordingData: CreateRecordingDto) {
+    const createdRecording =  new this.recordingModel({
+      ...recordingData,
+      tenantId:tenandId,
+      user: new Types.ObjectId(recordingData.userId)
+    });
     return await createdRecording.save();
   }
 

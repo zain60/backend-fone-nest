@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { RecordingsService } from './recordings.service';
 import { CreateRecordingDto } from './dto/create-recording.dto';
 import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
@@ -6,10 +6,12 @@ import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
 @UseGuards(TenantAuthenticationGuard)
 @Controller('recordings')
 export class RecordingsController {
-  constructor(private readonly recordingsService: RecordingsService) {}
+  constructor(private readonly recordingsService: RecordingsService) {
+  }
   @Post()
-  create(@Body() createRecordingDto: CreateRecordingDto) {
-    return this.recordingsService.create(createRecordingDto);
+  create(@Req()request: Request ,@Body() createRecordingDto: CreateRecordingDto) {
+    const tenandId = request.headers['x-tenant-id']?.toString()
+    return this.recordingsService.create(tenandId,createRecordingDto);
   }
 
   @Get()

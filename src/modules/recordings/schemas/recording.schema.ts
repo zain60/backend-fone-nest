@@ -10,22 +10,19 @@ export class Recording extends Document {
   recordingUrl: string;
 
   @Prop()
-  callerPhone: number;
+  callerPhone: string;
 
   @Prop()
-  customerPhone: number;
+  customerPhone: string;
 
   @Prop()
   summery: string;
 
-  @Prop({ type: Types.ObjectId, required: true, ref: 'User' })
-  userId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
 
   @Prop({ required: true })
   tenantId: string;
-
-  @Prop({ default: false })
-  isArchived: boolean;
 
   @Prop({ type: String, enum: ['outbound', 'inbound'], required: true })
   type: string;

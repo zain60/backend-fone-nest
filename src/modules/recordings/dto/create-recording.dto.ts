@@ -1,15 +1,13 @@
-import { IsString, IsNotEmpty, IsUrl } from "class-validator";
+import { IsString, IsNotEmpty, IsUrl, IsNumber, IsPhoneNumber } from "class-validator";
 
 export class CreateRecordingDto {
     @IsString()
         @IsNotEmpty()
         name: string;
 
-        @IsString()
         @IsNotEmpty()
         callerPhone: string;
     
-        @IsString()
         @IsNotEmpty()
         customerPhone: string;
     
@@ -23,5 +21,9 @@ export class CreateRecordingDto {
         @IsNotEmpty()
         @IsString()
         type: string;
+
+        @IsString()
+        @IsNotEmpty()
+        userId: string;
     
 }

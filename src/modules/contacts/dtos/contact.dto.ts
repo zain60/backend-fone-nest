@@ -15,4 +15,7 @@ export class ContactDto {
   @IsOptional()
   @IsString()
   listId: string;
+
+  @IsString()
+  userId: string;
 }

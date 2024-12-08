@@ -8,6 +8,7 @@ import { TenantsModule } from './modules/tenants/tenants.module';
 import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { UsersModule } from './modules/users/users.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
+import { RecordingsModule } from './modules/recordings/recordings.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ContactsModule } from './modules/contacts/contacts.module';
   TenantsModule,
   UsersModule,
   ContactsModule,
+  RecordingsModule,
 ],
   controllers: [],
   providers: [],

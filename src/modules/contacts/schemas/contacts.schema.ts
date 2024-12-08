@@ -20,6 +20,9 @@ export class Contact {
 
   @Prop({ required: true })
   tenantId: string;
+
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  user: Types.ObjectId;
 }
 
 export const ContactSchema = SchemaFactory.createForClass(Contact);
