@@ -20,8 +20,8 @@ export class ContactsService {
       .exec();
   }
 
-  async findOne(id: string): Promise<Contact> {
-    return this.contactModel.findById(id).populate('user').exec();
+  async findOne(id: string) {
+    return await  this.contactModel.findById(id).exec();
   }
 
   async create(contactData: ContactDto, tenantId: string): Promise<Contact> {
@@ -49,8 +49,8 @@ export class ContactsService {
     return this.contactModel.findByIdAndUpdate(id, contactData, { new: true }).exec();
   }
 
-  async delete(id: string): Promise<void> {
-    await this.contactModel.findByIdAndDelete(id).exec();
+  async delete(id: string): Promise<Contact> {
+    return await this.contactModel.findByIdAndDelete(id).exec();
   }
 
 }

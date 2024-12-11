@@ -20,15 +20,20 @@ export class RecordingsService {
   return await this.recordingModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recording`;
+  async findByUserId(userId: string) {
+    return await this.recordingModel.find({ user: new Types.ObjectId(userId) }).populate('user')
+    .exec();
   }
 
-  update(id: number, updateRecordingDto) {
-    return `This action updates a #${id} recording`;
+  async findOne(id: string): Promise<Recording> {
+    return this.recordingModel.findById(id).populate('user').exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} recording`;
+  async update(id: string,updateData: CreateRecordingDto) {
+    return this.recordingModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  }
+
+  async delete(id: string) {
+    return this.recordingModel.findByIdAndDelete(id).exec();
   }
 }

@@ -13,10 +13,14 @@ export class ContactsController {
       return this.contactsService.findAll();
     }
 
-
-    @Get(':id')
+    @Get('user/:id')
     async findByUserId(@Param('id') id: string) {
       return this.contactsService.findByUserId(id);
+    }
+
+    @Get(':id')
+    async findOne(@Param('id') id: string) {
+      return this.contactsService.findOne(id);
     }
   
     @Post()
@@ -40,5 +44,5 @@ export class ContactsController {
     async delete(@Param('id') id: string) {
       return this.contactsService.delete(id);
     }
-  
+
 }

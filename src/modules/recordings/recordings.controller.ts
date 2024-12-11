@@ -20,17 +20,17 @@ export class RecordingsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recordingsService.findOne(+id);
+  findByUserId(@Param('id') id: string) {
+    return this.recordingsService.findByUserId(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRecordingDto) {
-    return this.recordingsService.update(+id, updateRecordingDto);
+  update(@Param('id') id: string, @Body() CreateRecordingDto) {
+    return this.recordingsService.update(id, CreateRecordingDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.recordingsService.remove(+id);
+    return this.recordingsService.delete(id);
   }
 }

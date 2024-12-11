@@ -9,6 +9,7 @@ import { AppointmentsModule } from './modules/appointments/appointments.module';
 import { UsersModule } from './modules/users/users.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { RecordingsModule } from './modules/recordings/recordings.module';
+import { ListModule } from './modules/list/list.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { RecordingsModule } from './modules/recordings/recordings.module';
   UsersModule,
   ContactsModule,
   RecordingsModule,
+  ListModule,
 ],
   controllers: [],
   providers: [],
