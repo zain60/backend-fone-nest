@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dtos/role.dto';
-import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
+import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
 
 @UseGuards(TenantAuthenticationGuard)
 @Controller('roles')

@@ -18,7 +18,6 @@ import {
     ) {}
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
-      console.log(`tennat auth  called`);
 
       const request = context.switchToHttp().getRequest();
       

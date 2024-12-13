@@ -6,7 +6,7 @@ import {
     ForbiddenException,
   } from '@nestjs/common';
   import { Reflector } from '@nestjs/core';
-  import { PERMISSIONS_KEY } from 'src/shared/decorators/permissions.decorator';
+  import { PERMISSIONS_KEY } from 'src/common/decorators/permissions.decorator';
   import { Permission } from 'src/modules/roles/dtos/role.dto';
   import { UsersService } from 'src/modules/users/users.service';
   
@@ -27,8 +27,8 @@ import {
         PERMISSIONS_KEY,
         [context.getHandler(), context.getClass()],
       );
-      console.log(` the route permissions are ${routePermissions}`);
-  
+
+      
       if (!routePermissions) {
           return true;
       }

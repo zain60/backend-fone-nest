@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { ContactsService } from './contacts.service';
 import { ContactDto } from './dtos/contact.dto';
-import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
+import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
 import { BulkContactDto } from './dtos/bulk-contact.sto';
-import { PermissionGuard } from 'src/Guards/permission.guard';
+import { PermissionGuard } from 'src/common/Guards/permission.guard';
 import { Action } from '../roles/enums/action.enum';
 
-import { Permissions } from '../../shared/decorators/permissions.decorator';
+import { Permissions } from '../../common/decorators/permissions.decorator';
 import { Resource } from '../roles/enums/resource.enum';
 
 @UseGuards(TenantAuthenticationGuard, PermissionGuard)

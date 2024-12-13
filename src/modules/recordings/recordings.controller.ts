@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { RecordingsService } from './recordings.service';
 import { CreateRecordingDto } from './dto/create-recording.dto';
-import { TenantAuthenticationGuard } from 'src/Guards/tenant-auth.guard';
-import { PermissionGuard } from 'src/Guards/permission.guard';
+import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
+import { PermissionGuard } from 'src/common/Guards/permission.guard';
 import { Action } from '../roles/enums/action.enum';
 
-import { Permissions } from '../../shared/decorators/permissions.decorator';
+import { Permissions } from '../../common/decorators/permissions.decorator';
 import { Resource } from '../roles/enums/resource.enum';
 
 @UseGuards(TenantAuthenticationGuard, PermissionGuard)
