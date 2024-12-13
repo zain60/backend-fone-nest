@@ -1,6 +1,7 @@
 
 import { Connection } from 'mongoose';
 import { Appointment, AppointmentSchema } from 'src/modules/appointments/schemas/appointments.schema';
+import { Campaign, CampaignSchema } from 'src/modules/campaigns/schemas/campaign.schema';
 import { Contact, ContactSchema } from 'src/modules/contacts/schemas/contacts.schema';
 import { List, ListSchema } from 'src/modules/list/schemas/list.sechema';
 import { Recording, RecordingSchema } from 'src/modules/recordings/schemas/recording.schema';
@@ -46,6 +47,13 @@ export const tenantModels = {
     provide: 'ROLE_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(Role.name,RoleSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+  campaginModel: {
+    provide: 'CAMPAGIN_MODEL',
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(Campaign.name,CampaignSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

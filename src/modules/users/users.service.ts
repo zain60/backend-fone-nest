@@ -49,7 +49,8 @@ export class UsersService {
             { userId: user._id.toString() },
             { secret: secretKey, expiresIn: '10h' }
         );
-        return { user, accessToken };
+        const userPermissions = await this.getUserPermissions(user.id);
+        return { user,userPermissions, accessToken };
     }
 
     async saveSettings(userData: UserAppointmentSettingsDto) {

@@ -10,29 +10,29 @@ export class Campaign {
     @Prop({ type: Types.ObjectId, ref: 'User', required: true })
     user: Types.ObjectId;
 
-  @Prop({ required: true })
-  name: string;
+    @Prop({ required: true })
+    name: string;
 
-  @Prop({ required: true, enum: ['outbound', 'inbound'] })
-  type: string;
+    @Prop({ required: true, enum: ['outbound', 'inbound'] })
+    type: string;
 
-  @Prop({ required: true, default: 'active', enum: ['active', 'paused', 'completed'] })
-  status: string;
+    @Prop({ required: true, default: 'active', enum: ['active', 'inactive', 'completed'] })
+    status: string;
 
-  @Prop({ required: true })
-  phoneNumber: string;
+    @Prop({ required: true })
+    phoneNumber: string;
 
-  @Prop({ type: [String], default: [] })
-  list: string[];
+    @Prop({ type: [String], default: [] })
+    list: string[];
 
-  @Prop()
-  voiceId: string;
+    @Prop()
+    voiceId: string;
 
-  @Prop({ type: Date })
-  lastCallTime: Date;
+    @Prop({ type: Date })
+    lastCallTime: Date;
 
-  @Prop({ type: Number, default: 0 })
-  completedContacts: number;
+    @Prop({ type: Number, default: 0 })
+    completedContacts: number;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);
