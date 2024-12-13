@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { TenantsConnectionService } from '../../shared/services/tenants-connection.service';
+import { TenantsConnectionService } from '../../libs/services/tenants-connection.service';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 @Module({

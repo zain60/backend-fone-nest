@@ -3,7 +3,7 @@ import { Appointment } from './schemas/appointments.schema';
 import { Model, Types } from 'mongoose';
 import { AppointmentDto } from './dtos/appointment.dto';
 import { AvailabilityDto } from './dtos/availablity.dto';
-import { USER_AVAILABILITY_URL } from 'src/shared/utils/constants/constants';
+import { USER_AVAILABILITY_URL } from 'src/libs/utils/constants/baseUrls';
 import { User } from '../users/user.schema';
 import { UsersService } from '../users/users.service';
 // import { groupTimeslotsByDate } from 'src/shared/utils/utils.service';

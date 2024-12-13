@@ -1,8 +1,8 @@
 
 import { v4 as uuidv4 } from 'uuid';
-import { decrypt, encrypt } from 'src/shared/utils/utils.service';
+import { decrypt, encrypt } from '../../libs/services/Encryption.service';
 import { ConfigService } from '@nestjs/config';
-import { TenantsConnectionService } from '../../shared/services/tenants-connection.service';
+import { TenantsConnectionService } from '../../libs/services/tenants-connection.service';
 import { Secrets, SecretsSchema } from './schemas/secrets.schema';
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
