@@ -11,6 +11,7 @@ import { ContactsModule } from './modules/contacts/contacts.module';
 import { RecordingsModule } from './modules/recordings/recordings.module';
 import { ListModule } from './modules/list/list.module';
 import { RolesModule } from './modules/roles/roles.module';
+import { CampaignsModule } from './modules/campaigns/campaigns.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { RolesModule } from './modules/roles/roles.module';
   RecordingsModule,
   ListModule,
   RolesModule,
+  CampaignsModule,
 ],
   controllers: [],
   providers: [],
