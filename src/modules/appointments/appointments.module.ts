@@ -8,6 +8,7 @@ import { TenantsModule } from 'src/modules/tenants/tenants.module';
 import { tenantConnectionProvider } from 'src/shared/providers/tenants-connection.provider';
 import { tenantModels } from 'src/shared/providers/tenants-models.provider';
 import { AuthModule } from 'src/modules/auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [AppointmentsController],
@@ -17,6 +18,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
   imports: [
     TenantsModule,
     AuthModule,
+    UsersModule,
     MongooseModule.forFeature([
       { name: Appointment.name, schema: AppointmentSchema }
     ])

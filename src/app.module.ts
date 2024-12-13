@@ -10,6 +10,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { RecordingsModule } from './modules/recordings/recordings.module';
 import { ListModule } from './modules/list/list.module';
+import { RolesModule } from './modules/roles/roles.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ListModule } from './modules/list/list.module';
   ContactsModule,
   RecordingsModule,
   ListModule,
+  RolesModule,
 ],
   controllers: [],
   providers: [],

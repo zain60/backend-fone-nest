@@ -8,6 +8,7 @@ import { Recording,RecordingSchema } from './schemas/recording.schema';
 import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
 import { TenantsModule } from '../tenants/tenants.module';
 import { AuthModule } from '../auth/auth.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [RecordingsController],
@@ -16,6 +17,7 @@ import { AuthModule } from '../auth/auth.module';
   ],
   imports: [
     TenantsModule,
+    UsersModule,
     AuthModule,
     MongooseModule.forFeature([
       { name: Recording.name, schema: RecordingSchema },

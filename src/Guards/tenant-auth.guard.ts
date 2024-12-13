@@ -4,9 +4,7 @@ import {
     Injectable,
     UnauthorizedException,
     Logger,
-    ForbiddenException,
   } from '@nestjs/common';
-  import { Reflector } from '@nestjs/core';
   import { JwtService } from '@nestjs/jwt';
   import { Request } from 'express';
   import { AuthService } from 'src/modules/auth/auth.service';
@@ -20,7 +18,10 @@ import {
     ) {}
   
     async canActivate(context: ExecutionContext): Promise<boolean> {
+      console.log(`tennat auth  called`);
+
       const request = context.switchToHttp().getRequest();
+      
       //Make sure tenant middleware was applied
       if (!request.tenantId) {
         throw new UnauthorizedException('Missing tenant id');

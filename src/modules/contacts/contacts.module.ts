@@ -8,6 +8,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Contact, ContactSchema } from './schemas/contacts.schema';
 import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [ContactsController],
@@ -16,6 +17,7 @@ import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
   ],
   imports: [
     TenantsModule,
+    UsersModule,
     AuthModule,
     MongooseModule.forFeature([
       { name: Contact.name, schema: ContactSchema }

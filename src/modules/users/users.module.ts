@@ -9,6 +9,7 @@ import { TenantsMiddleware } from 'src/shared/middlewares/tenants.middleware';
 import { TenantsModule } from 'src/modules/tenants/tenants.module';
 import { AuthModule } from 'src/modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RolesModule } from '../roles/roles.module';
 
 
 @Module({
@@ -16,6 +17,7 @@ import { JwtModule } from '@nestjs/jwt';
     TenantsModule,
     AuthModule,
     JwtModule,
+    RolesModule,
     MongooseModule.forFeature([
     {
       name: User.name,
@@ -26,6 +28,7 @@ import { JwtModule } from '@nestjs/jwt';
   providers: [UsersService,tenantConnectionProvider,
     tenantModels.userModel
   ],
+  exports: [UsersService]
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
