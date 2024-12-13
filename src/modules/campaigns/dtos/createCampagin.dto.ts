@@ -3,7 +3,7 @@ import { IsString, IsEnum, IsArray, IsOptional, IsMongoId, IsDateString, IsNumbe
 
 export class CreateCampaignDto {
     @IsMongoId()
-    user: string;
+    userId: string;
 
     @IsString()
     name: string;
@@ -30,7 +30,4 @@ export class CreateCampaignDto {
     @IsOptional()
     lastCallTime: Date;
 
-    @IsNumber()
-    @IsOptional()
-    completedContacts: number;
 }

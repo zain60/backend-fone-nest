@@ -31,7 +31,6 @@ export class Campaign {
     @Prop({ type: Date })
     lastCallTime: Date;
 
-    @Prop({ type: Number, default: 0 })
     completedContacts: number;
 }
 

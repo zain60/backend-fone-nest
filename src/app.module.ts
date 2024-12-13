@@ -44,7 +44,7 @@ import { CampaignsModule } from './modules/campaigns/campaigns.module';
   RecordingsModule,
   ListModule,
   RolesModule,
-  CampaignsModule,
+  CampaignsModule
 ],
   controllers: [],
   providers: [],
