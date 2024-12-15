@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { RolesController } from './roles.controller';
-import { Role, RoleSchema } from './schemas/roles.schema';
+import { Role, RoleSchema } from '../../schemas/roles.schema'
 import { MongooseModule } from '@nestjs/mongoose';
 import { tenantConnectionProvider } from 'src/common/providers/tenants-connection.provider';
 import { tenantModels } from 'src/common/providers/tenants-models.provider';

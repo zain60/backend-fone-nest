@@ -7,7 +7,7 @@ import {
   } from '@nestjs/common';
   import { Reflector } from '@nestjs/core';
   import { PERMISSIONS_KEY } from 'src/common/decorators/permissions.decorator';
-  import { Permission } from 'src/modules/roles/dtos/role.dto';
+  import { Permission } from '../../dtos/role.dto';
   import { UsersService } from 'src/modules/users/users.service';
   
   @Injectable()

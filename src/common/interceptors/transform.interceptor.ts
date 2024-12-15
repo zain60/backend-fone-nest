@@ -9,7 +9,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
     return next.handle().pipe(
       map(data => ({
         success: true,
-        data,
+        data: data.message ? { ...data, message: undefined } : data,
         message: data.message || 'Operation successful',
         statusCode: context.switchToHttp().getResponse().statusCode,
         apiVersion: '1.0',

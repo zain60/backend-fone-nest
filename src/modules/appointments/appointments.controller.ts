@@ -1,9 +1,9 @@
 import { Controller, Post, Body, UseGuards, Req, Get, Patch, Delete, Param, Put } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
-import { AppointmentDto } from './dtos/appointment.dto';
+import { AppointmentDto } from '../../dtos/appointment.dto';
 import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
-import { AvailabilityDto } from './dtos/availablity.dto';
-import { ManageBookingsDto } from './dtos/manageBookings.dto';
+import { AvailabilityDto } from '../../dtos/availablity.dto';
+import { ManageBookingsDto } from '../../dtos/manageBookings.dto';
 
 @UseGuards(TenantAuthenticationGuard)
 @Controller('appointments')

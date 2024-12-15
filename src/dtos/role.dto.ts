@@ -5,8 +5,8 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Action } from '../enums/action.enum';
-import { Resource } from '../enums/resource.enum';
+import { Action } from '../libs/utils/enums/action.enum';
+import { Resource } from '../libs/utils/enums/resource.enum';
 
 export class CreateRoleDto {
   @IsString()

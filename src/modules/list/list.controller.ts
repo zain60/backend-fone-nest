@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
 import { ListService } from './list.service';
-import { CreateListDto } from './dto/create-list.dto';
+import { CreateListDto } from '../../dtos/create-list.dto';
 import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
 
 @UseGuards(TenantAuthenticationGuard)

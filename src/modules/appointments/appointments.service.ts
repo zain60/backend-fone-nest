@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Appointment } from './schemas/appointments.schema';
+import { Appointment } from '../../schemas/appointments.schema';
 import { Model, Types } from 'mongoose';
-import { AppointmentDto } from './dtos/appointment.dto';
-import { AvailabilityDto } from './dtos/availablity.dto';
+import { AppointmentDto } from '../../dtos/appointment.dto';
+import { AvailabilityDto } from '../../dtos/availablity.dto';
 import { USER_AVAILABILITY_URL } from 'src/libs/utils/constants/baseUrls';
-import { User } from '../users/user.schema';
+import { User } from '../../schemas/user.schema';
 import { UsersService } from '../users/users.service';
 // import { groupTimeslotsByDate } from 'src/shared/utils/utils.service';
-import { ManageBookingsDto } from './dtos/manageBookings.dto';
+import { ManageBookingsDto } from '../../dtos/manageBookings.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -56,7 +56,7 @@ export class AppointmentsService {
     const { startDate, endDate, userId } = availablityData;
     const userData = await this.userService.findById(userId);
     if (!userData) throw new Error('User not found')
-    const { activeEventId, apiKey, duration } = userData
+    const { activeEventId, apiKey, duration } = userData.data
 
     try {
       const apiResponce = await fetch(`${URL}?startTime=${startDate}&endTime=${endDate}&eventTypeId=${activeEventId}&duration=${duration}?slotFormat=range`, {
@@ -76,7 +76,7 @@ export class AppointmentsService {
   async manageAppointment(appointmentData: ManageBookingsDto) {
     const { userId,action ,booking_uid,newDateTime} = appointmentData;
     const userData = await this.userService.findById(userId);
-    const { activeEventId, apiKey, duration } = userData
+    const { activeEventId, apiKey, duration } = userData.data
     if (!userData) throw new Error('User not found')
   }
 

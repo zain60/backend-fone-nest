@@ -6,7 +6,7 @@ import { tenantModels } from 'src/common/providers/tenants-models.provider';
 import { TenantsModule } from '../tenants/tenants.module';
 import { AuthModule } from '../auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { List, ListSchema } from './schemas/list.sechema';
+import { List, ListSchema } from '../../schemas/list.sechema';
 import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
 
 

@@ -3,18 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { decrypt, encrypt } from '../../libs/services/Encryption.service';
 import { ConfigService } from '@nestjs/config';
 import { TenantsConnectionService } from '../../libs/services/tenants-connection.service';
-import { Secrets, SecretsSchema } from './schemas/secrets.schema';
-import { JwtService } from '@nestjs/jwt';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { LoginDto } from './dtos/login.dto';
-import { UsersService } from 'src/modules/users/users.service';
-import * as bcrypt from 'bcrypt';
-import { SignUpDto } from './dtos/signup.dto';
+import { Secrets, SecretsSchema } from '../../schemas/secrets.schema';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
   constructor(
     private tenantConnectionService: TenantsConnectionService,
+    private configService: ConfigService,
 
   ) { }
  
@@ -24,7 +20,7 @@ export class AuthService {
 
     const encryptedSecret = encrypt(
       jwtSecret,
-      "encryptionSecretKey",
+      this.configService.get('security.encryptionSecretKey'),
     );
 
     const SecretsModel = await this.tenantConnectionService.getTenantModel(
@@ -52,7 +48,8 @@ export class AuthService {
     const secretsDoc = await SecretsModel.findOne();
     const secretKey = decrypt(
       secretsDoc.jwtSecret,
-      "encryptionSecretKey",
+      this.configService.get('security.encryptionSecretKey'),
+
     );
     return secretKey;
   }

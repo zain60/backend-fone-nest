@@ -1,12 +1,13 @@
 
 import { Connection } from 'mongoose';
-import { Appointment, AppointmentSchema } from 'src/modules/appointments/schemas/appointments.schema';
-import { Campaign, CampaignSchema } from 'src/modules/campaigns/schemas/campaign.schema';
-import { Contact, ContactSchema } from 'src/modules/contacts/schemas/contacts.schema';
-import { List, ListSchema } from 'src/modules/list/schemas/list.sechema';
-import { Recording, RecordingSchema } from 'src/modules/recordings/schemas/recording.schema';
-import { Role, RoleSchema } from 'src/modules/roles/schemas/roles.schema';
-import { User, UserSchema } from 'src/modules/users/user.schema';
+import { Appointment, AppointmentSchema } from 'src/schemas/appointments.schema';
+import { Campaign, CampaignSchema } from 'src/schemas/campaign.schema';
+import { Contact, ContactSchema } from 'src/schemas/contacts.schema';
+import { List, ListSchema } from 'src/schemas/list.sechema';
+import { Recording, RecordingSchema } from 'src/schemas/recording.schema';
+import { Role, RoleSchema } from '../../schemas/roles.schema';
+import { User, UserSchema } from 'src/schemas/user.schema';
+import { TwilioNumber, TwilioNumberSchema } from 'src/schemas/twilioNumber.schema';
 export const tenantModels = {
   appointmentModel: {
     provide: 'APPOINTMENT_MODEL',
@@ -54,6 +55,13 @@ export const tenantModels = {
     provide: 'CAMPAGIN_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(Campaign.name,CampaignSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+  twilioNumberModel: {
+    provide: 'TWILIO_NUMBER_MODEL',
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(TwilioNumber.name,TwilioNumberSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

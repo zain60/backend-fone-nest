@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateRecordingDto } from './dto/create-recording.dto';
+import { CreateRecordingDto } from '../../dtos/create-recording.dto';
 import { Model, Types } from 'mongoose';
-import { Recording } from './schemas/recording.schema';
+import { Recording } from '../../schemas/recording.schema';
 
 @Injectable()
 export class RecordingsService {

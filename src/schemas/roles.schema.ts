@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Resource } from "../enums/resource.enum";
-import { Action } from "../enums/action.enum";
+import { Resource } from "../libs/utils/enums/resource.enum";
+import { Action } from "../libs/utils/enums/action.enum";
 
 
 @Schema()
@@ -16,6 +16,9 @@ export class Permissions{
 export class Role {
     @Prop({required: true})
     name : string;
+    
+    @Prop({required: true})
+    tenantId:string;
     
     @Prop({required:true, type:[Permissions]})
     permissions : Permissions[];

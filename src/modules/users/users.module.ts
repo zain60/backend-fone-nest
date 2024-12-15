@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './user.schema';
+import { User, UserSchema } from '../../schemas/user.schema';
 import { tenantConnectionProvider } from 'src/common/providers/tenants-connection.provider';
 import { tenantModels } from 'src/common/providers/tenants-models.provider';
 import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';

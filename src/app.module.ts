@@ -12,6 +12,7 @@ import { RecordingsModule } from './modules/recordings/recordings.module';
 import { ListModule } from './modules/list/list.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
+import { TwlioNumbersModule } from './modules/twlio-numbers/twlio-numbers.module';
 
 @Module({
   imports: [
@@ -44,7 +45,8 @@ import { CampaignsModule } from './modules/campaigns/campaigns.module';
   RecordingsModule,
   ListModule,
   RolesModule,
-  CampaignsModule
+  CampaignsModule,
+  TwlioNumbersModule
 ],
   controllers: [],
   providers: [],

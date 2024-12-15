@@ -1,14 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { Campaign } from './schemas/campaign.schema';
-import { CreateCampaignDto } from './dtos/createCampagin.dto';
+import { Model, Types } from 'mongoose';
+import { Campaign } from '../../schemas/campaign.schema';
+import { CreateCampaignDto } from '../../dtos/createCampagin.dto';
 
 @Injectable()
 export class CampaignsService {
     constructor(
-        @Inject('CAMPAGIN_MODEL') private campaignModel: Model<Campaign>) {}
+    @Inject('CAMPAGIN_MODEL') private campaignModel: Model<Campaign>
+    ) {}
 
-    async createCampaign(data:CreateCampaignDto): Promise<Campaign> {
+    async createCampaign(tenandId:string,data:CreateCampaignDto): Promise<Campaign> {
         const createdCampaign = new this.campaignModel({
             name: data.name,
             type: data.type,
@@ -17,10 +18,17 @@ export class CampaignsService {
             list: data.list,
             voiceId: data.voiceId,
             lastCallTime: data.lastCallTime,
-            completedContacts: data,
-            user: data.userId
+            completedContacts: data.completedContacts.map(id => new Types.ObjectId(id)),
+            user: new Types.ObjectId(data.userId),
+            tenandId
         });
         await createdCampaign.save();
         return createdCampaign;
+    }
+
+    async getCampaigns(userId:string): Promise<Campaign[]> {
+        return this.campaignModel.find({ user: new Types.ObjectId(userId) })
+        .populate('user')
+        .exec();
     }
 }

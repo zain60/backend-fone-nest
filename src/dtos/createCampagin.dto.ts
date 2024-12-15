@@ -1,5 +1,5 @@
 
-import { IsString, IsEnum, IsArray, IsOptional, IsMongoId, IsDateString, IsNumber } from 'class-validator';
+import { IsString, IsEnum, IsArray, IsOptional, IsMongoId, IsDateString } from 'class-validator';
 
 export class CreateCampaignDto {
     @IsMongoId()
@@ -29,5 +29,10 @@ export class CreateCampaignDto {
     @IsDateString()
     @IsOptional()
     lastCallTime: Date;
+    
+    @IsArray()
+    @IsOptional()
+    @IsMongoId({ each: true })
+    completedContacts: string[];
 
 }

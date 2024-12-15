@@ -30,8 +30,12 @@ export class Campaign {
 
     @Prop({ type: Date })
     lastCallTime: Date;
-
-    completedContacts: number;
+    
+    @Prop({ type: Types.ObjectId, ref: 'Contact', required: true })
+    completedContacts: Types.ObjectId;
+    
+    @Prop({required:true})
+    tenandId: string;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

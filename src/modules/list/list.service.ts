@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateListDto } from './dto/create-list.dto';
-import { List } from './schemas/list.sechema';
+import { CreateListDto } from '../../dtos/create-list.dto';
+import { List } from '../../schemas/list.sechema';
 import { Model, Types } from 'mongoose';
 
 @Injectable()

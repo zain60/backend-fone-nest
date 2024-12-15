@@ -11,6 +11,7 @@ export class List {
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;
+  
 }
 
 export const ListSchema = SchemaFactory.createForClass(List);

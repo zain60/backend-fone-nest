@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { AppointmentsController } from './appointments.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Appointment, AppointmentSchema } from './schemas/appointments.schema';
+import { Appointment, AppointmentSchema } from '../../schemas/appointments.schema';
 import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
 import { TenantsModule } from 'src/modules/tenants/tenants.module';
 import { tenantConnectionProvider } from 'src/common/providers/tenants-connection.provider';

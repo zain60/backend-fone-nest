@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Tenant, TenantSchema } from './schemas/tenant.schema';
+import { Tenant, TenantSchema } from '../../schemas/tenant.schema';
 import { TenantsService } from './tenants.service';
 import { TenantsController } from './tenants.controller';
 import { tenantConnectionProvider } from 'src/common/providers/tenants-connection.provider';

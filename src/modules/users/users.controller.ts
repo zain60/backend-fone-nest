@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserDto } from './dtos/user.dto';
-import { logInDto } from './dtos/login.dto';
-import { UserAppointmentSettingsDto } from './dtos/user-appointment-settings.dto';
+import { UserDto } from '../../dtos/user.dto';
+import { LoginDto } from '../../dtos/login.dto';
+import { UserAppointmentSettingsDto } from '../../dtos/user-appointment-settings.dto';
 
 
 @Controller('users')
@@ -17,7 +17,7 @@ export class UsersController {
   }
 
   @Post('login')
-  async LogIn(@Body() loginData: logInDto): Promise<any> {
+  async LogIn(@Body() loginData: LoginDto): Promise<any> {
     const { email, password } = loginData;
     return this.usersService.loginUser(email, password);
   }

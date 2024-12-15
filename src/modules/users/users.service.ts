@@ -1,11 +1,11 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { User } from './user.schema';
+import { User } from '../../schemas/user.schema';
 import { Model } from 'mongoose';
-import { UserDto } from './dtos/user.dto';
+import { UserDto } from '../../dtos/user.dto';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserAppointmentSettingsDto } from './dtos/user-appointment-settings.dto';
+import { UserAppointmentSettingsDto } from '../../dtos/user-appointment-settings.dto';
 import { RolesService } from '../roles/roles.service';
 
 @Injectable()
@@ -22,23 +22,26 @@ export class UsersService {
 
     }
     async createUser(userData: UserDto, tenantId: string) {
-        const { name,email,password } = userData
+        const { name, email, password } = userData
         const user = await this.getUsersByEmail(email)
         if (user) throw new BadRequestException('User already exist and belongs to a company');
         const roledata = await this.rolesService.getDefaultCutomerRole();
         const roleId = roledata?._id
         const passwordStore  = await bcrypt.hash(password, 10);
-        const response = this.userModel.create({
+        const response = await this.userModel.create({
             name,
             email,
             password: passwordStore,
             tenantId,
             roleId
-
         });
-        return response;
-    }
 
+        return {
+            name: response.name,
+            email: response.email,
+            message: `User created successfully`
+        };
+    }
     async loginUser(email: string, password: string) {
         const user = await this.getUsersByEmail(email);
         if (!user) throw new BadRequestException('User does not exist');
@@ -50,7 +53,14 @@ export class UsersService {
             { secret: secretKey, expiresIn: '10h' }
         );
         const userPermissions = await this.getUserPermissions(user.id);
-        return { user,userPermissions, accessToken };
+        return {
+            name:user.name,
+            email:user.email,
+            tenantId: user.tenantId,
+            userPermissions,
+            accessToken,
+            message: "User loggedIn successfully",
+        };
     }
 
     async saveSettings(userData: UserAppointmentSettingsDto) {
@@ -64,11 +74,23 @@ export class UsersService {
             duration,
             apiKey
         });
-        return response;
+
+        return {
+            timezone: response.timezone,
+            activeEventId: response.activeEventId,
+            activeEventSlug: response.activeEventSlug,
+            duration: response.duration,
+            apiKey,
+            message:"User information updated",
+        };
     }
 
     async findById(id: string) {
-        return await this.userModel.findById(id).exec();
+        const data =  await this.userModel.findById(id).exec();
+        return {
+            data:data,
+            message:"data against the id is following"
+        }
     }
 
     async getUserPermissions(userId: string) {
