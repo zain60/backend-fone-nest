@@ -9,7 +9,7 @@ export class CampaignsService {
     @Inject('CAMPAGIN_MODEL') private campaignModel: Model<Campaign>
     ) {}
 
-    async createCampaign(tenandId:string,data:CreateCampaignDto): Promise<Campaign> {
+    async createCampaign(tenandId:string,data:CreateCampaignDto) {
         const createdCampaign = new this.campaignModel({
             name: data.name,
             type: data.type,
@@ -23,12 +23,19 @@ export class CampaignsService {
             tenandId
         });
         await createdCampaign.save();
-        return createdCampaign;
+        return {
+            message: 'Campaign created successfully',
+            data: createdCampaign
+        }
     }
 
-    async getCampaigns(userId:string): Promise<Campaign[]> {
-        return this.campaignModel.find({ user: new Types.ObjectId(userId) })
+    async getCampaigns(userId:string) {
+        const data = await  this.campaignModel.find({ user: new Types.ObjectId(userId) })
         .populate('user')
         .exec();
+        return{
+            message: 'Campaigns retrieved successfully',
+            data: data
+        }
     }
 }

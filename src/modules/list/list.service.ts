@@ -10,31 +10,56 @@ export class ListService {
    @Inject("LIST_MODEL") private listModel: Model<List>,
   ) {}
 
-  create(tenandId:string,createListData: CreateListDto) {
-    return this.listModel.create({
+  async create(tenandId:string,createListData: CreateListDto) {
+    const data =  await this.listModel.create({
       ...createListData,
      tenantId:tenandId,
       user: new Types.ObjectId(createListData.userId)
     });
+    return {
+      data: data,
+      message: "List created successfully"
+    }
   }
 
-  findAll() {
-    return this.listModel.find().exec();
+  async findAll() {
+    const data = await this.listModel.find().exec();
+    return {
+      data: data,
+      message: "List fetched successfully"
+    }
   }
 
-  findOne(id: string) {
-    return  this.listModel.findById(id).exec();
+  async findOne(id: string) {
+    const data = await  this.listModel.findById(id).exec();
+    return {
+      data: data,
+      message: "List fetched successfully"
+    }
   }
-  findByUserId(userId: string) {
-    return  this.listModel.find({ user: new Types.ObjectId(userId) }).populate('user')
+
+  async findByUserId(userId: string) {
+    const data = await  this.listModel.find({ user: new Types.ObjectId(userId) }).populate('user')
     .exec();
+    return {
+      data: data,
+      message: "List fetched successfully"
+    }
   }
 
-  update(id: string, updateData:CreateListDto) {
-    return this.listModel.findByIdAndUpdate(id, updateData).exec();
+  async update(id: string, updateData:CreateListDto) {
+    const data = await this.listModel.findByIdAndUpdate(id, updateData).exec();
+    return {
+      data: data,
+      message: "List updated successfully"
+    }
   }
 
-  remove(id: string) {
-    return this.listModel.findByIdAndDelete(id).exec();
+  async remove(id: string) {
+    const data = await this.listModel.findByIdAndDelete(id).exec();
+    return {
+      data: data,
+      message: "List deleted successfully"
+    }
   }
 }

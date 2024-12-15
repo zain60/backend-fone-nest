@@ -30,25 +30,45 @@ export class AppointmentsService {
   }
 
   async findAll() {
-    return this.appointmentModel.find().exec();
+    const  data = await this.appointmentModel.find().exec();
+    return {
+      message: 'Appointments retrieved successfully',
+      data: data
+    }
   }
 
   async findByUserId(userId: string) {
-    return await this.appointmentModel.find({ user: new Types.ObjectId(userId) })
+    const data =  await this.appointmentModel.find({ user: new Types.ObjectId(userId) })
       .populate('user')
       .exec();
+      return {
+        message: 'Appointments retrieved successfully',
+        data: data
+      }
   }
 
-  async findOne(id: string): Promise<Appointment> {
-    return this.appointmentModel.findById(id).populate('user').exec();
+  async findOne(id: string) {
+    const data = await  this.appointmentModel.findById(id).populate('user').exec();
+    return {
+      message: 'Appointment retrieved successfully',
+      data: data
+    }
   }
 
-  async update(id: string, updateData: AppointmentDto): Promise<Appointment> {
-    return await this.appointmentModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  async update(id: string, updateData: AppointmentDto) {
+    const data =  await this.appointmentModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    return {
+      message: 'Appointment updated successfully',
+      data: data
+    }
   }
 
   async delete(id: string) {
-    return this.appointmentModel.findByIdAndDelete(id).exec();
+    const data = await  this.appointmentModel.findByIdAndDelete(id).exec();
+    return {
+      message: 'Appointment deleted successfully',
+      data: data
+    }
   }
 
   async getAvailablity(availablityData: AvailabilityDto) {

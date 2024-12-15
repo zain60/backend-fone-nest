@@ -28,14 +28,23 @@ export class TenantsService {
     const tenantId =  uuidv4();
     await this.authService.createSecretKeyForNewTenant(tenantId);
     
-    return this.tenantModel.create({
+    const data = await this.tenantModel.create({
       companyName:companyName,
       tenantId:tenantId
     });
+
+    return {
+      data: data,
+      message: "Company created successfully"
+    }
   }
 
   async getCompanyByName(companyName: string) {
-    return await this.tenantModel.findOne({ companyName });
+    const data =  await this.tenantModel.findOne({ companyName });
+    return {
+      data: data,
+      message: "Company fetched successfully"
+    }
   }
 }
 

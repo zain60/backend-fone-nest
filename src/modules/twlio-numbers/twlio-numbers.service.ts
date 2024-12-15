@@ -24,7 +24,7 @@ export class TwlioNumbersService {
   async findAll() {
     const data = await this.twilioModel.find({ isDeleted: false });
     return {
-      message: "All Twilio Numbers",
+      message: "Retrived All Twilio Numbers",
       data: data
     }
   }

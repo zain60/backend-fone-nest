@@ -26,7 +26,7 @@ export class UsersService {
         const user = await this.getUsersByEmail(email)
         if (user) throw new BadRequestException('User already exist and belongs to a company');
         const roledata = await this.rolesService.getDefaultCutomerRole();
-        const roleId = roledata?._id
+        const roleId = roledata?.data?._id
         const passwordStore  = await bcrypt.hash(password, 10);
         const response = await this.userModel.create({
             name,
@@ -97,7 +97,7 @@ export class UsersService {
         const user = await this.userModel.findById(userId);
         if (!user) throw new BadRequestException();
         const role = await this.rolesService.getRoleById(user.roleId.toString());
-        return role.permissions;
+        return role.data.permissions;
     }
 
 }

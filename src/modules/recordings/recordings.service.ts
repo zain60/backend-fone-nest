@@ -13,27 +13,51 @@ export class RecordingsService {
       tenantId:tenandId,
       user: new Types.ObjectId(recordingData.userId)
     });
-    return await createdRecording.save();
+     await createdRecording.save();
+     return {
+      data: createdRecording,
+      message: "Recording created successfully"
+    }
   }
 
  async findAll() {
-  return await this.recordingModel.find().exec();
+  const data =  await this.recordingModel.find().exec();
+  return {
+    data: data,
+    message: "Recordings fetched successfully"
   }
+}
 
   async findByUserId(userId: string) {
-    return await this.recordingModel.find({ user: new Types.ObjectId(userId) }).populate('user')
+    const data =  await this.recordingModel.find({ user: new Types.ObjectId(userId) }).populate('user')
     .exec();
+    return {
+      data: data,
+      message: "Recordings fetched successfully"
+    }
   }
 
-  async findOne(id: string): Promise<Recording> {
-    return this.recordingModel.findById(id).populate('user').exec();
+  async findOne(id: string) {
+    const data =  this.recordingModel.findById(id).populate('user').exec();
+    return {
+      data: data,
+      message: "Recording fetched successfully"
+    }
   }
 
   async update(id: string,updateData: CreateRecordingDto) {
-    return this.recordingModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    const data =  this.recordingModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
+    return {
+      data: data,
+      message: "Recording updated successfully"
+    }
   }
 
   async delete(id: string) {
-    return this.recordingModel.findByIdAndDelete(id).exec();
+    const data = await this.recordingModel.findByIdAndDelete(id).exec();
+    return {
+      data: data,
+      message: "Recording deleted successfully"
+    }
   }
 }

@@ -11,9 +11,9 @@ export class ContactsService {
   
   async findAll() {
    const data = await this.contactModel.find().exec();
-   return {
+   return{
     data:data,
-    message:"Records received sucessfully"
+    message:"Records recterived sucessfully"
    }
   }
 
@@ -24,7 +24,7 @@ export class ContactsService {
       .exec();
       return {
         data:data,
-        message:"Records received sucessfully"
+        message:"Records reterived sucessfully"
        }
   }
 
@@ -32,7 +32,7 @@ export class ContactsService {
     const data =  await  this.contactModel.findById(id).exec();
     return {
       data:data,
-      message:"Records received sucessfully"
+      message:"Records reterived sucessfully"
      }
   }
 
@@ -46,7 +46,7 @@ export class ContactsService {
     const data =  createdContact.populate('user');
     return {
       data:data,
-      message:"Records received sucessfully"
+      message:"Records created sucessfully"
      }
   }
 
@@ -60,7 +60,7 @@ export class ContactsService {
     const data = await this.contactModel.insertMany(contactsToCreate);
     return {
       data:data,
-      message:"Records received sucessfully"
+      message:"Bulk Contracts importedd sucessfully"
      }
   }
 
@@ -68,7 +68,7 @@ export class ContactsService {
     const data = await  this.contactModel.findByIdAndUpdate(id, contactData, { new: true }).exec();
     return {
       data:data,
-      message:"Records received sucessfully"
+      message:"contacts updated  sucessfully"
      }
   }
 
@@ -76,7 +76,7 @@ export class ContactsService {
     const data =  await this.contactModel.findByIdAndDelete(id).exec();
     return {
       data:data,
-      message:"Records received sucessfully"
+      message:"contacts deleted sucessfully"
      }
   }
 
