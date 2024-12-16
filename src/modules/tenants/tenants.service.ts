@@ -41,10 +41,7 @@ export class TenantsService {
 
   async getCompanyByName(companyName: string) {
     const data =  await this.tenantModel.findOne({ companyName });
-    return {
-      data: data,
-      message: "Company fetched successfully"
-    }
+   return data;
   }
 }
 

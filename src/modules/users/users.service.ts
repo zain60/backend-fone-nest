@@ -54,6 +54,7 @@ export class UsersService {
         );
         const userPermissions = await this.getUserPermissions(user.id);
         return {
+            userId: user._id,
             name:user.name,
             email:user.email,
             tenantId: user.tenantId,
