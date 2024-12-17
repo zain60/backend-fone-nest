@@ -18,9 +18,7 @@ export class UsersController {
 
   @Post('login')
   async LogIn(@Body() loginData: LoginDto): Promise<any> {
-    console.log("loginData",loginData)
     const { email, password } = loginData;
-    console.log("loginData",loginData)
     return this.usersService.loginUser(email, password);
   }
 
