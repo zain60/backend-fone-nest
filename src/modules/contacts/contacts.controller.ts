@@ -53,6 +53,11 @@ export class ContactsController {
     return this.contactsService.findOne(id);
   }
 
+  @Get('number/:number')
+  async findByNumber(@Param('number') number: string) {
+    return this.contactsService.findByNumber(number);
+  }
+
   @Permissions([
     {
       resource: Resource.contacts,
@@ -83,7 +88,7 @@ export class ContactsController {
       actions: [Action.update]
     }
   ])
-  @Put(':id')
+  @Put('update/:id')
   async update(@Param('id') id: string, @Body() contactData: ContactDto) {
     return this.contactsService.update(id, contactData);
   }

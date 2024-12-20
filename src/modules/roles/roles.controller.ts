@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from '../../dtos/role.dto';
 import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
@@ -18,6 +18,12 @@ export class RolesController {
   async seedRoles(@Req() request: Request,@Body() role:CreateRoleDto) {
     const tenantId = request.headers['x-tenant-id']?.toString();
     return this.rolesService.seedRole(tenantId,role);
+  }
+
+  @UseGuards(TenantAuthenticationGuard)
+  @Put(':id')
+  async updateRole(@Param('id') id: string,@Body() role:CreateRoleDto) {
+    return this.rolesService.updateRole(id,role);
   }
 }
 

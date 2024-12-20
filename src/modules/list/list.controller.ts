@@ -33,4 +33,15 @@ export class ListController {
   remove(@Param('id') id: string) {
     return this.listService.remove(id);
   }
+
+  @Post('remove-by-name')
+  removeAll(@Body() body: { listName: string }) {
+    return this.listService.removeByName(body.listName)
+  }
+
+  @Get('name/:name')
+  findByName(@Param('name') name: string) {
+    console.log({name})
+    return this.listService.findByName(name);
+  }
 }

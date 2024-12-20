@@ -38,6 +38,14 @@ export class ListService {
     }
   }
 
+  async findByName(name: string) {
+    const data = await  this.listModel.findOne({ listName: name }).exec();
+    return {
+      data: data,
+      message: "List fetched successfully"
+    }
+  }
+
   async findByUserId(userId: string) {
     const data = await  this.listModel.find({ user: new Types.ObjectId(userId) }).populate('user')
     .exec();
@@ -57,6 +65,14 @@ export class ListService {
 
   async remove(id: string) {
     const data = await this.listModel.findByIdAndDelete(id).exec();
+    return {
+      data: data,
+      message: "List deleted successfully"
+    }
+  }
+
+  async removeByName(listName: string) {
+    const data = await this.listModel.deleteOne({ listName }).exec();
     return {
       data: data,
       message: "List deleted successfully"
