@@ -13,6 +13,10 @@ export class UserDto {
   @IsNotEmpty()
   phoneNumber: string;
 
+  @IsNotEmpty()
+  @IsString()
+  role: string;
+
   @IsString()
   @IsNotEmpty()
   @MinLength(6)

@@ -6,4 +6,5 @@ export enum Resource {
     settings = "settings",
     dashhboard = "dashboard",
     overview = "overview",
+    roles = "roles",
 }

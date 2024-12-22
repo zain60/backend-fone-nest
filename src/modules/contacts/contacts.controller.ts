@@ -53,6 +53,12 @@ export class ContactsController {
     return this.contactsService.findOne(id);
   }
 
+  @Permissions([
+    {
+      resource: Resource.contacts,
+      actions: [Action.read]
+    }
+  ])
   @Get('number/:number')
   async findByNumber(@Param('number') number: string) {
     return this.contactsService.findByNumber(number);
