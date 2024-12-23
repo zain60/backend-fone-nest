@@ -39,10 +39,12 @@ import {
           request.userInfo.id,
         );
   
+
         for (const routePermission of routePermissions) {
-          const userPermission = userPermissions.find(
+          const userPermission = userPermissions.data.find(
             (perm) => perm.resource === routePermission.resource,
           );
+
   
           if (!userPermission) throw new ForbiddenException();
   

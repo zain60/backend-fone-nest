@@ -4,6 +4,7 @@ export enum Resource {
     recordings = 'recordings',
     appointments = 'appointments',
     settings = "settings",
-    dashhboard = "dashboard",
     overview = "overview",
+    roles = "roles",
+    usersManagement = "usersManagement",
 }

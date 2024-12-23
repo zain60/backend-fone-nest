@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,7 +11,7 @@ import { AuthModule } from 'src/modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { RolesModule } from '../roles/roles.module';
 
-
+@Global()
 @Module({
   imports: [
     TenantsModule,

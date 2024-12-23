@@ -12,22 +12,60 @@ export class ContactsService {
   async findAll() {
    const data = await this.contactModel.find().exec();
    return{
-    data:data,
+    data,
     message:"Records recterived sucessfully"
    }
   }
 
-  async findByUserId(userId: string) {
-    const data = await  this.contactModel
-      .find({ user: new Types.ObjectId(userId) })
-      .populate('user')
-      .exec();
-      return {
-        data:data,
-        message:"Records reterived sucessfully"
-       }
+  async findByNumber(number: string) {
+    const data = await this.contactModel.findOne({ number }).exec();
+    return {
+      data:data,
+      message:"Records reterived sucessfully"
+     }
   }
 
+  async findByUserId(userId: string) {
+    const data = await this.contactModel.aggregate([
+      {
+        $match: { user: new Types.ObjectId(userId) } // Match all contacts for the given user
+      },
+      {
+        $lookup: {
+          from: 'lists', // List collection
+          localField: 'listId',
+          foreignField: '_id',
+          as: 'listDetails'
+        }
+      },
+      {
+        $lookup: {
+          from: 'users', // User collection
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userDetails'
+        }
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          number: 1,
+          listName: { $arrayElemAt: ['$listDetails.listName', 0] }, // Extract listName
+          userName: { $arrayElemAt: ['$userDetails.name', 0] }, // Extract userName
+          tenantId: 1,
+          createdAt: 1,
+          updatedAt: 1
+        }
+      }
+    ]);
+  
+    return {
+      data: data,
+      message: "Records retrieved successfully"
+    };
+  }
+  
   async findOne(id: string) {
     const data =  await  this.contactModel.findById(id).exec();
     return {
@@ -40,6 +78,7 @@ export class ContactsService {
     const createdContact = new this.contactModel({
       ...contactData,
       tenantId,
+      listId: new Types.ObjectId(contactData.listId),
       user: new Types.ObjectId(contactData.userId)
     });
     await createdContact.save();
@@ -54,6 +93,7 @@ export class ContactsService {
     const contactsToCreate = bulkData.contacts.map((contact: any) => ({
       ...contact,
       tenantId,
+      listId: new Types.ObjectId(bulkData.contacts[0].listId),
       user: new Types.ObjectId(bulkData.userId)
     }));
 
@@ -65,7 +105,11 @@ export class ContactsService {
   }
 
   async update(id: string, contactData: ContactDto) {
-    const data = await  this.contactModel.findByIdAndUpdate(id, contactData, { new: true }).exec();
+    const data = await  this.contactModel.findByIdAndUpdate(id, {
+      ...contactData,
+      listId: new Types.ObjectId(contactData.listId),
+      user: new Types.ObjectId(contactData.userId)
+    }).exec();
     return {
       data:data,
       message:"contacts updated  sucessfully"

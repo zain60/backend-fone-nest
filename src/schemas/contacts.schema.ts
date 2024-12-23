@@ -15,8 +15,8 @@ export class Contact {
   @Prop({ required: true })
   number: string;
 
-  @Prop({ required: true })
-  listId: string;
+  @Prop({ type: Types.ObjectId, ref: 'List', required: true })
+  listId: Types.ObjectId;
 
   @Prop({ required: true })
   tenantId: string;

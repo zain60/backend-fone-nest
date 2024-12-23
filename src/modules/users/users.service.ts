@@ -22,11 +22,11 @@ export class UsersService {
 
     }
     async createUser(userData: UserDto, tenantId: string) {
-        const { name, email, password } = userData
+        const { name, email, password,role } = userData
         const user = await this.getUsersByEmail(email)
         if (user) throw new BadRequestException('User already exist and belongs to a company');
-        const roledata = await this.rolesService.getDefaultCutomerRole();
-        const roleId = roledata?.data?._id
+        const roleName = role || 'customer';
+        const roleData = await this.rolesService.getRoleByName(roleName);        const roleId = roleData?.data?._id;
         const passwordStore  = await bcrypt.hash(password, 10);
         const response = await this.userModel.create({
             name,
@@ -52,18 +52,19 @@ export class UsersService {
             { userId: user._id.toString() },
             { secret: secretKey, expiresIn: '10h' }
         );
-        const userPermissions = await this.getUserPermissions(user.id);
+        const {role,data} = await this.getUserPermissions(user.id);
         return {
             userId: user._id,
             name:user.name,
             email:user.email,
             tenantId: user.tenantId,
-            userPermissions,
+            userPermissions : data,
+            role,
+            roleId: user.roleId,
             accessToken,
             message: "User loggedIn successfully",
         };
     }
-
     async saveSettings(userData: UserAppointmentSettingsDto) {
         const {userId, timezone, activeEventId, activeEventSlug, duration, apiKey } = userData
         const user = await this.userModel.findOne({_id:userId});
@@ -85,7 +86,6 @@ export class UsersService {
             message:"User information updated",
         };
     }
-
     async findById(id: string) {
         const data =  await this.userModel.findById(id).exec();
         return {
@@ -93,14 +93,88 @@ export class UsersService {
             message:"data against the id is following"
         }
     }
-
     async getUserPermissions(userId: string) {
         const user = await this.userModel.findById(userId);
         if (!user) throw new BadRequestException();
-        const role = await this.rolesService.getRoleById(user.roleId.toString());
-        return role.data.permissions;
+        if (!user.roleId) {
+            throw new BadRequestException('No role assigned to this user');
+        }   const role = await this.rolesService.getRoleById(user.roleId.toString());
+        if (!role.data) {
+            throw new BadRequestException('Role not found for this user');
+        }
+        return {data:role.data.permissions,
+            role:role.data.name,    
+        };
+    }
+    async getUsersByTenantId(tenantId: string) {
+        const users = await this.userModel.aggregate([
+            {
+                $match: { tenantId }
+            },
+            {
+                $lookup: {
+                    from: 'roles',
+                    localField: 'roleId',
+                    foreignField: '_id',
+                    as: 'role'
+                }
+            },
+            {
+                $unwind: '$role'
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    email: 1,
+                    tenantId: 1,
+                    roleId: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    'role.name': 1
+                }
+            }
+        ]);
+        
+        return {
+            data: users,
+            message: "Users retrieved successfully",
+            count: users.length
+        };
     }
 
+    async updateUserRole(userId: string, roleName: string) {
+        const user = await this.userModel.findById(userId);
+        if (!user) throw new BadRequestException('User not found');
+    
+        const roleData = await this.rolesService.getRoleByName(roleName);
+        const roleId = roleData?.data?._id;
+        if (!roleId) throw new BadRequestException('Role not found');
+    
+        const updatedUser = await this.userModel.findByIdAndUpdate(
+            userId,
+            { roleId },
+            { new: true }
+        ).select('-password');
+    
+        return {
+            data: updatedUser,
+            message: "User role updated successfully"
+        };
+    }
+
+    async deleteUser(userId: string) {
+        const user = await this.userModel.findById(userId);
+        if (!user) throw new BadRequestException('User not found');
+    
+        await this.userModel.findByIdAndDelete(userId);
+    
+        return {
+            message: "User deleted successfully"
+        };
+    }
+       
+    
 }
 
 
