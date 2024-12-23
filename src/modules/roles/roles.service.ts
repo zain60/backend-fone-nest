@@ -45,9 +45,6 @@ export class RolesService {
     if (!targetRole) {
       throw new BadRequestException('roleId not found');
     }
-    if (userRole.name === 'customer') {
-      throw new BadRequestException('Customers cannot modify roles');
-    }
     if (userRole.name === 'admin' && targetRole.name === 'superAdmin') {
       throw new BadRequestException('Admin can only modify admin and customer roles');
     }

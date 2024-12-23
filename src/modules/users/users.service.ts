@@ -25,8 +25,8 @@ export class UsersService {
         const { name, email, password,role } = userData
         const user = await this.getUsersByEmail(email)
         if (user) throw new BadRequestException('User already exist and belongs to a company');
-        const roleData = await this.rolesService.getRoleByName(role);
-        const roleId = roleData?.data?._id;
+        const roleName = role || 'customer';
+        const roleData = await this.rolesService.getRoleByName(roleName);        const roleId = roleData?.data?._id;
         const passwordStore  = await bcrypt.hash(password, 10);
         const response = await this.userModel.create({
             name,
@@ -106,6 +106,75 @@ export class UsersService {
             role:role.data.name,    
         };
     }
+    async getUsersByTenantId(tenantId: string) {
+        const users = await this.userModel.aggregate([
+            {
+                $match: { tenantId }
+            },
+            {
+                $lookup: {
+                    from: 'roles',
+                    localField: 'roleId',
+                    foreignField: '_id',
+                    as: 'role'
+                }
+            },
+            {
+                $unwind: '$role'
+            },
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    email: 1,
+                    tenantId: 1,
+                    roleId: 1,
+                    createdAt: 1,
+                    updatedAt: 1,
+                    'role.name': 1
+                }
+            }
+        ]);
+        
+        return {
+            data: users,
+            message: "Users retrieved successfully",
+            count: users.length
+        };
+    }
+
+    async updateUserRole(userId: string, roleName: string) {
+        const user = await this.userModel.findById(userId);
+        if (!user) throw new BadRequestException('User not found');
+    
+        const roleData = await this.rolesService.getRoleByName(roleName);
+        const roleId = roleData?.data?._id;
+        if (!roleId) throw new BadRequestException('Role not found');
+    
+        const updatedUser = await this.userModel.findByIdAndUpdate(
+            userId,
+            { roleId },
+            { new: true }
+        ).select('-password');
+    
+        return {
+            data: updatedUser,
+            message: "User role updated successfully"
+        };
+    }
+
+    async deleteUser(userId: string) {
+        const user = await this.userModel.findById(userId);
+        if (!user) throw new BadRequestException('User not found');
+    
+        await this.userModel.findByIdAndDelete(userId);
+    
+        return {
+            message: "User deleted successfully"
+        };
+    }
+       
+    
 }
 
 

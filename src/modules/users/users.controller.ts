@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDto } from '../../dtos/user.dto';
 import { LoginDto } from '../../dtos/login.dto';
@@ -31,4 +31,21 @@ export class UsersController {
   async findById(@Param('id') id: string): Promise<any> {
     return this.usersService.findById(id);
   }
+  @Get('tenant/:tenantId')
+  async getUsersByTenant(@Param('tenantId') tenantId: string) {
+      return this.usersService.getUsersByTenantId(tenantId);
+  }
+
+  @Patch(':userId/role')
+async updateUserRole(
+    @Param('userId') userId: string,
+    @Body('roleName') roleName: string
+) {
+    return this.usersService.updateUserRole(userId, roleName);
+}
+
+@Delete(':userId')
+async deleteUser(@Param('userId') userId: string) {
+    return this.usersService.deleteUser(userId);
+} 
 }
