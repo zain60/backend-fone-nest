@@ -173,8 +173,7 @@ export class UsersService {
             message: "User deleted successfully"
         };
     }
-       
-    
+          
 }
 
 

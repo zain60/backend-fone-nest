@@ -20,16 +20,16 @@ export class TenantsService {
   }
 
   async createCompany(companyData: CreateCompanyDto) {
-    const { companyName } = companyData;
-    const companyExsist = await this.getCompanyByName(companyName);
+    const { domain } = companyData;
+    const companyExsist = await this.getTenantByDomain(domain);
     if (companyExsist) {
-      throw new BadRequestException('This company is already registered as a tenant');
+      throw new BadRequestException('This company/domain is already registered as a tenant');
     }
     const tenantId =  uuidv4();
     await this.authService.createSecretKeyForNewTenant(tenantId);
     
     const data = await this.tenantModel.create({
-      companyName:companyName,
+      ...companyData,
       tenantId:tenantId
     });
 
@@ -39,8 +39,9 @@ export class TenantsService {
     }
   }
 
-  async getCompanyByName(companyName: string) {
-    const data =  await this.tenantModel.findOne({ companyName });
+
+  async getTenantByDomain(domain: string) {
+    const data =  await this.tenantModel.findOne({ domain });
    return data;
   }
 }

@@ -22,13 +22,13 @@ export class RolesController {
     ])
   @Post()
   async createRole(@Req() request: Request, @Body() role: CreateRoleDto) {
-    const tenantId = request.headers['x-tenant-id']?.toString();
+    const tenantId = request['tenantId'];
     return this.rolesService.createRole(tenantId, role);
   }
 
   @Post('seed-roles')
   async seedRoles(@Req() request: Request, @Body() role: CreateRoleDto) {
-    const tenantId = request.headers['x-tenant-id']?.toString();
+    const tenantId = request['tenantId'];
     return this.rolesService.seedRole(tenantId, role);
   }
 

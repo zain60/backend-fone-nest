@@ -72,8 +72,8 @@ export class ContactsController {
   ])
   @Post()
   async create(@Req() request: Request, @Body() contactData: ContactDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.contactsService.create(contactData, tenandId);
+    const tenantId = request['tenantId'];
+    return this.contactsService.create(contactData, tenantId);
   }
 
   @Permissions([
@@ -84,8 +84,8 @@ export class ContactsController {
   ])
   @Post('bulk-import')
   async bulkImport(@Req() request: Request, @Body() contactData: BulkContactDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.contactsService.bulkCreate(contactData, tenandId);
+    const tenantId = request['tenantId'];
+    return this.contactsService.bulkCreate(contactData, tenantId);
   }
 
   @Permissions([

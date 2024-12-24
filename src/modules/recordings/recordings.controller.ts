@@ -22,8 +22,8 @@ export class RecordingsController {
   ])
   @Post()
   create(@Req() request: Request, @Body() createRecordingDto: CreateRecordingDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.recordingsService.create(tenandId, createRecordingDto);
+    const tenantId = request['tenantId'];
+    return this.recordingsService.create(tenantId, createRecordingDto);
   }
 
 
