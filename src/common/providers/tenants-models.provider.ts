@@ -8,6 +8,7 @@ import { Recording, RecordingSchema } from 'src/schemas/recording.schema';
 import { Role, RoleSchema } from '../../schemas/roles.schema';
 import { User, UserSchema } from 'src/schemas/user.schema';
 import { TwilioNumber, TwilioNumberSchema } from 'src/schemas/twilioNumber.schema';
+import { KnowledgeBase, KnowledgeBaseSchema } from 'src/schemas/knowledgeBase.schema';
 export const tenantModels = {
   appointmentModel: {
     provide: 'APPOINTMENT_MODEL',
@@ -62,6 +63,13 @@ export const tenantModels = {
     provide: 'TWILIO_NUMBER_MODEL',
     useFactory: async (tenantConnection: Connection) => {
       return tenantConnection.model(TwilioNumber.name,TwilioNumberSchema);
+    },
+    inject: ['TENANT_CONNECTION'],
+  },
+  knowledgeBaseModel: {
+    provide: 'KNOWLEDGE_BASE_MODEL',
+    useFactory: async (tenantConnection: Connection) => {
+      return tenantConnection.model(KnowledgeBase.name,KnowledgeBaseSchema);
     },
     inject: ['TENANT_CONNECTION'],
   },

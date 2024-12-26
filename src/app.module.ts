@@ -13,6 +13,7 @@ import { ListModule } from './modules/list/list.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { TwlioNumbersModule } from './modules/twlio-numbers/twlio-numbers.module';
+import { KnowledgeBaseModule } from './modules/knowledge-base/knowledge-base.module';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { TwlioNumbersModule } from './modules/twlio-numbers/twlio-numbers.module
   ListModule,
   RolesModule,
   CampaignsModule,
-  TwlioNumbersModule
+  TwlioNumbersModule,
+  KnowledgeBaseModule
 ],
   controllers: [],
   providers: [],

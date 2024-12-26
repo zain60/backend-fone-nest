@@ -258,4 +258,30 @@ export class UsersService {
             throw error;
         }
     }
+    async resetPassword(email: string, oldPassword: string, newPassword: string) {
+        const user = await this.userModel.findOne({ email });
+        if (!user) {
+          throw new BadRequestException('User not found');
+        } 
+        const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+        if (!isPasswordValid) {
+          throw new BadRequestException('Invalid current password');
+        }
+      
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        
+        const updatedUser = await this.userModel.findByIdAndUpdate(
+          user._id,
+          { password: hashedNewPassword },
+          { new: true }
+        ).select('-password');
+      
+        this.logger.log(`Password reset successful for user: ${email}`, 'UsersService');
+      
+        return {
+          data: updatedUser,
+          message: "Password reset successfully"
+        };
+    }
+      
 }

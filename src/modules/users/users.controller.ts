@@ -32,7 +32,7 @@ export class UsersController {
     return this.usersService.findById(id);
   }
   @Get('')
-    async getUsersByTenant(@Req() request: Request) {
+  async getUsersByTenant(@Req() request: Request) {
     const tenantId = request['tenantId'];
     return this.usersService.getUsersByTenantId(tenantId);
   }
@@ -49,4 +49,17 @@ export class UsersController {
   async deleteUser(@Param('userId') userId: string) {
     return this.usersService.deleteUser(userId);
   }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() resetData: {
+      email: string;
+      oldPassword: string;
+      newPassword: string;
+    }
+  ) {
+    const { email, oldPassword, newPassword } = resetData;
+    return this.usersService.resetPassword(email, oldPassword, newPassword);
+  }
+
 }
