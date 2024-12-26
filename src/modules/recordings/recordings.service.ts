@@ -28,12 +28,24 @@ export class RecordingsService {
   }
 }
 
-  async findByUserId(userId: string) {
-    const data =  await this.recordingModel.find({ user: new Types.ObjectId(userId) }).populate('user')
-    .exec();
+  async findByUserId(userId: string,page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit
+    const [data, total] = await Promise.all([
+      this.recordingModel.find({ user: new Types.ObjectId(userId) }).populate('user')
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      this.recordingModel.countDocuments()
+    ])
     return {
       data: data,
-      message: "Recordings fetched successfully"
+      message: "Recordings fetched successfully",
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit)
+      }
     }
   }
 

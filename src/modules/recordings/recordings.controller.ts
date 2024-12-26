@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Query } from '@nestjs/common';
 import { RecordingsService } from './recordings.service';
 import { CreateRecordingDto } from '../../dtos/create-recording.dto';
 import { TenantAuthenticationGuard } from 'src/common/Guards/tenant-auth.guard';
@@ -45,8 +45,10 @@ export class RecordingsController {
     }
   ])
   @Get(':id')
-  findByUserId(@Param('id') id: string) {
-    return this.recordingsService.findByUserId(id);
+  findByUserId(@Param('id') id: string,
+  @Query('page') page: number = 1,
+  @Query('limit') limit: number = 10) {
+    return this.recordingsService.findByUserId(id,page, limit);
   }
 
   @Permissions([

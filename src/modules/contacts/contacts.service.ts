@@ -24,47 +24,61 @@ export class ContactsService {
       message:"Records reterived sucessfully"
      }
   }
-
-  async findByUserId(userId: string) {
-    const data = await this.contactModel.aggregate([
-      {
-        $match: { user: new Types.ObjectId(userId) } // Match all contacts for the given user
-      },
-      {
-        $lookup: {
-          from: 'lists', // List collection
-          localField: 'listId',
-          foreignField: '_id',
-          as: 'listDetails'
+  async findByUserId(userId: string, page: number = 1, limit: number = 10) {
+    const skip = (page - 1) * limit;
+    
+    const [data, total] = await Promise.all([
+      this.contactModel.aggregate([
+        {
+          $match: { user: new Types.ObjectId(userId) }
+        },
+        {
+          $lookup: {
+            from: 'lists',
+            localField: 'listId',
+            foreignField: '_id',
+            as: 'listDetails'
+          }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user',
+            foreignField: '_id',
+            as: 'userDetails'
+          }
+        },
+        {
+          $project: {
+            name: 1,
+            email: 1,
+            number: 1,
+            listName: { $arrayElemAt: ['$listDetails.listName', 0] },
+            userName: { $arrayElemAt: ['$userDetails.name', 0] },
+            tenantId: 1,
+            createdAt: 1,
+            updatedAt: 1
+          }
         }
-      },
-      {
-        $lookup: {
-          from: 'users', // User collection
-          localField: 'user',
-          foreignField: '_id',
-          as: 'userDetails'
-        }
-      },
-      {
-        $project: {
-          name: 1,
-          email: 1,
-          number: 1,
-          listName: { $arrayElemAt: ['$listDetails.listName', 0] }, // Extract listName
-          userName: { $arrayElemAt: ['$userDetails.name', 0] }, // Extract userName
-          tenantId: 1,
-          createdAt: 1,
-          updatedAt: 1
-        }
-      }
+      ])
+      .skip(skip)
+      .limit(limit)
+      .exec(),
+      this.contactModel.countDocuments({ user: new Types.ObjectId(userId) })
     ]);
   
     return {
-      data: data,
+      data,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit)
+      },
       message: "Records retrieved successfully"
-    };
+    }
   }
+  
   
   async findOne(id: string) {
     const data =  await  this.contactModel.findById(id).exec();

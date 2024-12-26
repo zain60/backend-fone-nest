@@ -31,8 +31,8 @@ export class UsersController {
   async findById(@Param('id') id: string): Promise<any> {
     return this.usersService.findById(id);
   }
-  @Get('users-by-tenant')
-  async getUsersByTenant(@Req() request: Request) {
+  @Get('')
+    async getUsersByTenant(@Req() request: Request) {
     const tenantId = request['tenantId'];
     return this.usersService.getUsersByTenantId(tenantId);
   }

@@ -163,8 +163,7 @@ export class UsersService {
         };
     }
 
-    async getUsersByTenantId(tenantId: string) {
-        
+    async getUsersByTenantId(tenantId: string) {   
         try {
             const users = await this.userModel.aggregate([
                 {
