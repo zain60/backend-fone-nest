@@ -18,6 +18,9 @@ export class Recording extends Document {
   @Prop()
   summery: string;
 
+  @Prop()
+  duration: number;
+
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;
 

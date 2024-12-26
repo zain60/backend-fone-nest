@@ -10,8 +10,8 @@ export class TwlioNumbersController {
 
   @Post()
   create(@Req() request: Request,@Body() createTwlioNumberDto: CreateTwlioNumberDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.twlioNumbersService.create(tenandId,createTwlioNumberDto);
+    const tenantId = request['tenantId'];
+    return this.twlioNumbersService.create(tenantId,createTwlioNumberDto);
   }
 
   @Get()

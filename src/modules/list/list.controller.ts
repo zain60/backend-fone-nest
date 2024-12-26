@@ -10,8 +10,8 @@ export class ListController {
 
   @Post()
   create(@Req() request: Request,@Body() createListDto: CreateListDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.listService.create(tenandId,createListDto);
+    const tenantId = request['tenantId'];
+    return this.listService.create(tenantId,createListDto);
   }
 
   @Get()

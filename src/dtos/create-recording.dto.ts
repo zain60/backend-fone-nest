@@ -22,6 +22,9 @@ export class CreateRecordingDto {
         @IsString()
         type: string;
 
+        @IsNotEmpty()
+        duration: number;
+
         @IsString()
         @IsNotEmpty()
         userId: string;

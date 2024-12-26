@@ -13,8 +13,8 @@ export class AppointmentsController {
 
   @Post()
   async create(@Req() request: Request, @Body() appointmentData: AppointmentDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.appointmentsService.create(tenandId, appointmentData);
+    const tenantId = request['tenantId'];
+    return this.appointmentsService.create(tenantId, appointmentData);
   }
 
   @Get()

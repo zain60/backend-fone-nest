@@ -11,9 +11,9 @@ export class UsersController {
   ) { }
 
   @Post('signup')
-  async SignUp( @Req()request: Request,@Body() userData: UserDto): Promise<any> {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return this.usersService.createUser(userData,tenandId);
+  async SignUp(@Req() request: Request, @Body() userData: UserDto): Promise<any> {
+    const tenantId = request['tenantId'];
+    return this.usersService.createUser(userData, tenantId);
   }
 
   @Post('login')
@@ -31,21 +31,35 @@ export class UsersController {
   async findById(@Param('id') id: string): Promise<any> {
     return this.usersService.findById(id);
   }
-  @Get('tenant/:tenantId')
-  async getUsersByTenant(@Param('tenantId') tenantId: string) {
-      return this.usersService.getUsersByTenantId(tenantId);
+  @Get('')
+  async getUsersByTenant(@Req() request: Request) {
+    const tenantId = request['tenantId'];
+    return this.usersService.getUsersByTenantId(tenantId);
   }
 
   @Patch(':userId/role')
-async updateUserRole(
+  async updateUserRole(
     @Param('userId') userId: string,
     @Body('roleName') roleName: string
-) {
+  ) {
     return this.usersService.updateUserRole(userId, roleName);
-}
+  }
 
-@Delete(':userId')
-async deleteUser(@Param('userId') userId: string) {
+  @Delete(':userId')
+  async deleteUser(@Param('userId') userId: string) {
     return this.usersService.deleteUser(userId);
-} 
+  }
+
+  @Post('reset-password')
+  async resetPassword(
+    @Body() resetData: {
+      email: string;
+      oldPassword: string;
+      newPassword: string;
+    }
+  ) {
+    const { email, oldPassword, newPassword } = resetData;
+    return this.usersService.resetPassword(email, oldPassword, newPassword);
+  }
+
 }

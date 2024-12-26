@@ -11,8 +11,8 @@ export class CampaignsController {
 
   @Post()
   async createCampaign(@Req() request: Request, @Body() data: CreateCampaignDto) {
-    const tenandId = request.headers['x-tenant-id']?.toString()
-    return await this.campaignsService.createCampaign(tenandId,data);
+    const tenantId = request['tenantId'];
+    return await this.campaignsService.createCampaign(tenantId,data);
   }
 
   @Get(':id')

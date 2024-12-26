@@ -5,6 +5,8 @@ import { Document, Types } from 'mongoose';
 export class Tenant extends Document {
   @Prop({ required: true })
   companyName: string;
+  @Prop({ required: true })
+  domain: string;
   @Prop({ required: true, unique: true })
   tenantId: string;
 }

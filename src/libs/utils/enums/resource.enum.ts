@@ -7,4 +7,5 @@ export enum Resource {
     overview = "overview",
     roles = "roles",
     usersManagement = "usersManagement",
+    staff="staff"
 }
