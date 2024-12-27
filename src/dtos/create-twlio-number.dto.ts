@@ -12,4 +12,15 @@ export class CreateTwlioNumberDto {
     @IsString()
     @IsNotEmpty()
     userId: string
+
+    @IsString()
+    @IsNotEmpty()
+    status: string;
+
+    @IsString()
+    @IsNotEmpty()
+    vopi_number_id:string
+
+    isDeleted: boolean;
 }
+
