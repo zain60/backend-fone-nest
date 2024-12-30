@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
 import { CampaignsService } from './campaigns.service';
 import { CreateCampaignDto } from '../../dtos/createCampagin.dto';
 import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
@@ -15,9 +15,11 @@ export class CampaignsController {
     return await this.campaignsService.createCampaign(tenantId,data);
   }
 
-  @Get(':id')
-  async getCampaigns(@Param('id') id: string) {
-    return await this.campaignsService.getCampaigns(id);
+  @Get(':userId')
+  async getCampaigns(@Param('userId') userId: string,
+   @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10) {
+      console.log("received")
+    return await this.campaignsService.getCampaigns(userId, page, limit);
   }
-
 }

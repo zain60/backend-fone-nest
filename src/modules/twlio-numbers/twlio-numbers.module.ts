@@ -21,7 +21,8 @@ import { AuthModule } from '../auth/auth.module';
     MongooseModule.forFeature([
       { name: TwilioNumber.name, schema: TwilioNumberSchema },
     ])
-  ]
+  ],
+  exports: [TwlioNumbersService],
 })
 export class TwlioNumbersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

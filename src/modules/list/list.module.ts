@@ -22,6 +22,7 @@ import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
       { name: List.name, schema: ListSchema },
     ])
   ],
+  exports: [ListService],
 })
 export class ListModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

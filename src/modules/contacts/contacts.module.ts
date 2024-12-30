@@ -23,6 +23,7 @@ import { UsersModule } from '../users/users.module';
       { name: Contact.name, schema: ContactSchema }
     ])
   ],
+  exports: [ContactsService],
 })
 export class ContactsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

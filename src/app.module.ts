@@ -14,6 +14,8 @@ import { RolesModule } from './modules/roles/roles.module';
 import { CampaignsModule } from './modules/campaigns/campaigns.module';
 import { TwlioNumbersModule } from './modules/twlio-numbers/twlio-numbers.module';
 import { KnowledgeBaseModule } from './modules/knowledge-base/knowledge-base.module';
+import { SummarizerController } from './modules/ai-scrapping/ai-scraping.controller';
+import { SummarizerService } from './modules/ai-scrapping/ai-scraping.service';
 
 @Module({
   imports: [
@@ -50,8 +52,8 @@ import { KnowledgeBaseModule } from './modules/knowledge-base/knowledge-base.mod
   TwlioNumbersModule,
   KnowledgeBaseModule
 ],
-  controllers: [],
-  providers: [],
+  controllers: [SummarizerController],
+  providers: [SummarizerService],
 })
 
 export class AppModule {}

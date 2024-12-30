@@ -11,28 +11,25 @@ export class CreateCampaignDto {
     @IsEnum(['outbound', 'inbound'])
     type: string;
 
+    @IsOptional()
     @IsEnum(['active', 'inactive', 'completed'])
     status: string;
-
-    @IsString()
+    
+    @IsOptional()
     phoneNumber: string;
 
-    @IsArray()
-    @IsString({ each: true })
     @IsOptional()
-    list: string[];
+    list: string;
 
     @IsString()
-    @IsOptional()
     voiceId: string;
 
     @IsDateString()
     @IsOptional()
     lastCallTime: Date;
     
-    @IsArray()
     @IsOptional()
-    @IsMongoId({ each: true })
-    completedContacts: string[];
+    @IsString()
+    completedContacts: string
 
 }

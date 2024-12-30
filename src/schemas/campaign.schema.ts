@@ -22,8 +22,8 @@ export class Campaign {
     @Prop({ required: true })
     phoneNumber: string;
 
-    @Prop({ type: [String], default: [] })
-    list: string[];
+    @Prop({ type: Types.ObjectId, ref: 'List', required: false })
+    list: Types.ObjectId;
 
     @Prop()
     voiceId: string;
