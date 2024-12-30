@@ -20,6 +20,9 @@ export class KnowledgeBase {
   @Prop({ required: false })
   tenantId: string;
 
+  @Prop({ required: true })
+  phoneNumber: string;
+
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   user: Types.ObjectId;
 }

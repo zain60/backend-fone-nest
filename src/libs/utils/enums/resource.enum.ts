@@ -8,5 +8,6 @@ export enum Resource {
     roles = "roles",
     usersManagement = "usersManagement",
     staff="staff",
-    Campaigns="campaigns",
+    campaigns="campaigns",
+    knowledge_base="knowledge-base",
 }

@@ -20,4 +20,11 @@ export class CreateKnowledgeBaseDto {
   @IsOptional()
   @IsString()
   outboundMessage: string;
+
+  @IsOptional()
+  @IsString()
+  phoneNumber: string;
+
+  @IsString()
+  type: string;
 }

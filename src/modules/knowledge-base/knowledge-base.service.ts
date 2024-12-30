@@ -32,4 +32,11 @@ export class KnowledgeBaseService {
   remove(id: number) {
     return `This action removes a #${id} knowledgeBase`;
   }
+
+  async findByUser(userId: string) {
+      return this.knowledgeBaseModel.find({
+        user: new Types.ObjectId(userId),
+      }).exec();
+    }
+  
 }

@@ -22,6 +22,7 @@ import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
         { name: KnowledgeBase.name, schema: KnowledgeBaseSchema },
       ])
     ],
+    exports: [KnowledgeBaseService],
 })
 export class KnowledgeBaseModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
