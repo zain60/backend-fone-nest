@@ -20,6 +20,13 @@ export default () => ({
     methods: process.env.CORS_METHODS || 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: process.env.CORS_CREDENTIALS === 'true',
   },
+  vapi:{
+    VAPI_TOKEN: process.env.VAPI_TOKEN,
+    TWILIO_ACCOUNT_SID: process.env.TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN: process.env.TWILIO_AUTH_TOKEN,
+    VAPI_INBOUND_CALLBACK: process.env.VAPI_INBOUND_CALLBACK,
+    VAPI_OUTBOUND_CALLBACK: process.env.VAPI_OUTBOUND_CALLBACK,
+  },
   swagger: {
     title: 'Foni API',
     description: 'The Foni API documentation',

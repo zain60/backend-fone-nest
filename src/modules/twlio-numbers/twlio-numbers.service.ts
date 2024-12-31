@@ -37,6 +37,11 @@ export class TwlioNumbersService {
     }
   }
 
+  async findByNumber(number: string) {
+    return await this.twilioModel.findOne({ number: number, isDeleted: false });
+}
+
+
   async findOne(id: string) {
     const data = await this.twilioModel.findById(id);
     return {
@@ -52,6 +57,19 @@ export class TwlioNumbersService {
       data: data
     }
   }
+
+  async update_from_knowlegeBase(id: string, updateData: Partial<CreateTwlioNumberDto>) {
+    const data = await this.twilioModel.findByIdAndUpdate(
+        id, 
+        { $set: updateData },
+        { new: true }
+    );
+    
+    return {
+        message: `Record with id ${id} updated successfully`,
+        data: data
+    }
+}
 
   async remove(id: string) {
     const data = await this.twilioModel.findByIdAndUpdate(id, { isDeleted: true });

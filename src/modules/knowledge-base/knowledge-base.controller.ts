@@ -23,8 +23,8 @@ export class KnowledgeBaseController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateKnowledgeBaseDto) {
-    return this.knowledgeBaseService.update(+id, updateKnowledgeBaseDto);
+  update(@Param('id')@Body() data:CreateKnowledgeBaseDto) {
+    return this.knowledgeBaseService.update(data );
   }
 
   @Delete(':id')

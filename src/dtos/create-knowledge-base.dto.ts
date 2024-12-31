@@ -1,30 +1,23 @@
-import { IsOptional, IsString } from "class-validator";
+import {IsString } from "class-validator";
 
 export class CreateKnowledgeBaseDto {
   
   @IsString()  
   userId: string;
 
-  @IsOptional()
   @IsString()
-  inboundSummary: string;
-
-  @IsOptional()
-  @IsString()
-  outboundSummary: string;
-
-  @IsOptional()
-  @IsString()
-  inboundMessage: string;
-
-  @IsOptional()
-  @IsString()
-  outboundMessage: string;
-
-  @IsOptional()
-  @IsString()
-  phoneNumber: string;
+  
+  number: string;
 
   @IsString()
   type: string;
+ 
+  @IsString()
+  voice_Id: string;
+
+  @IsString()
+  content: string;
+
+  @IsString()
+  first_message: string;
 }
