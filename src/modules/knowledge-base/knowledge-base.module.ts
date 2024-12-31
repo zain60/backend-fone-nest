@@ -8,16 +8,22 @@ import { AuthModule } from '../auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { KnowledgeBase, KnowledgeBaseSchema } from 'src/schemas/knowledgeBase.schema';
 import { TenantsMiddleware } from 'src/common/middlewares/tenants.middleware';
+import { VapiService } from 'src/libs/services/vapi.service';
+import { HttpModule } from '@nestjs/axios';
+import { TwlioNumbersModule } from '../twlio-numbers/twlio-numbers.module';
+
 
 @Module({
   controllers: [KnowledgeBaseController],
   providers: [KnowledgeBaseService,
     tenantConnectionProvider,
-    tenantModels.knowledgeBaseModel
+    tenantModels.knowledgeBaseModel,VapiService
   ],
   imports: [
       TenantsModule,
       AuthModule,
+      HttpModule,
+      TwlioNumbersModule,
       MongooseModule.forFeature([
         { name: KnowledgeBase.name, schema: KnowledgeBaseSchema },
       ])
