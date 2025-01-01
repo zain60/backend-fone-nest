@@ -1,5 +1,5 @@
 
-import { IsString, IsEnum, IsArray, IsOptional, IsMongoId, IsDateString } from 'class-validator';
+import { IsString, IsEnum, IsOptional, IsMongoId } from 'class-validator';
 
 export class CreateCampaignDto {
     @IsMongoId()
@@ -11,6 +11,9 @@ export class CreateCampaignDto {
     @IsEnum(['outbound', 'inbound'])
     type: string;
 
+    @IsEnum(["immediate","scheduled","recurring"])
+    sending_type:string
+
     @IsOptional()
     @IsEnum(['active', 'inactive', 'completed'])
     status: string;
@@ -19,17 +22,9 @@ export class CreateCampaignDto {
     phoneNumber: string;
 
     @IsOptional()
-    list: string;
-
-    @IsString()
-    voiceId: string;
-
-    @IsDateString()
-    @IsOptional()
-    lastCallTime: Date;
+    schedule: Date;
     
     @IsOptional()
-    @IsString()
-    completedContacts: string
+    ListName: string;
 
 }

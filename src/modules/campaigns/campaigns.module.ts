@@ -13,11 +13,13 @@ import { ContactsModule } from '../contacts/contacts.module';
 import { TwlioNumbersModule } from '../twlio-numbers/twlio-numbers.module';
 
 import { HttpModule } from '@nestjs/axios';
+import { VapiService } from 'src/libs/services/vapi.service';
+import { KnowledgeBaseModule } from '../knowledge-base/knowledge-base.module';
 
 @Module({
   controllers: [CampaignsController],
   providers: [CampaignsService,tenantConnectionProvider,
-    tenantModels.campaginModel
+    tenantModels.campaginModel,VapiService
   ],
   imports: [
     TenantsModule,
@@ -25,6 +27,7 @@ import { HttpModule } from '@nestjs/axios';
     ContactsModule,
     TwlioNumbersModule,
     HttpModule,
+    KnowledgeBaseModule,
     MongooseModule.forFeature([
       { name: Campaign.name, schema: CampaignSchema }
     ])

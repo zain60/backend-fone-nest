@@ -133,14 +133,19 @@ export class KnowledgeBaseService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} knowledgeBase`;
-  }
-
   async findByUser(userId: string) {
     return this.knowledgeBaseModel.find({
       user: new Types.ObjectId(userId),
     }).exec();
   }
 
+  // create aservice to get record based on phoe umber
+  async findByNumber(number: string) {
+    const numberData = await this.twilioService.findByNumber(number);
+    console.log(numberData);
+    // return this.knowledgeBaseModel.findOne({
+    //   callerId: numberData._id,
+    // }).exec
+
+}
 }

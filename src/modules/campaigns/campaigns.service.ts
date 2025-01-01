@@ -5,6 +5,8 @@ import { CreateCampaignDto } from '../../dtos/createCampagin.dto';
 import { ListService } from '../list/list.service';
 import { ContactsService } from '../contacts/contacts.service';
 import { TwlioNumbersService } from '../twlio-numbers/twlio-numbers.service';
+import { VapiService } from 'src/libs/services/vapi.service';
+import { KnowledgeBaseService } from '../knowledge-base/knowledge-base.service';
 
 @Injectable()
 export class CampaignsService {
@@ -12,33 +14,44 @@ export class CampaignsService {
     @Inject('CAMPAGIN_MODEL') private campaignModel: Model<Campaign>,
     private listService: ListService,
     private contactsService: ContactsService,
-    private twilioService: TwlioNumbersService,
+    private vapiService: VapiService,
+    private knowledgeService: KnowledgeBaseService,
+    
+    // private twilioService: TwlioNumbersService,
     ) {}
 
     async createCampaign(tenandId:string,data:CreateCampaignDto) {
         
-        const list = await this.listService.findByUserId(data.userId)
-        const list_id = list.data[0]._id.toString()
 
-        const contacts = await this.contactsService.findByUserId(data.userId)
-        const contacts_id = contacts.data[0]._id.toString()
+        console.log(data);
+        const list = await this.listService.findByName(data.ListName);
+        const list_id  = list._id;
+        const list_id_contacts = list._id.toString();
 
+        const contacts = await this.contactsService.getContactsByListId(list_id_contacts);
+        const contacts_number = contacts.data.map(contact => contact.number);
+        console.log(contacts_number);
 
-        const numberId = await this.twilioService.findByUserId(data.userId)
-        const number = numberId.data[0].number
+        const knowlege = this.knowledgeService.findByNumber(contacts_number[0]);
+        console.log({knowlege});
+        return
 
-        // const bot = await this.assitantService.create(data.userId,knowledgeBase)
-        
+        // this.vapiService.callCustomer()
 
+        if(data.type == 'inbound'){
+            await this.campaignModel.findOneAndUpdate(
+                { 
+                    type: 'inbound',
+                    phoneNumber: data.phoneNumber,
+                    status: 'active'
+                },
+                { status: 'inactive' }
+            );
+        }
+      
         const createdCampaign = new this.campaignModel({
-            name: data.name,
-            type: data.type,
-            status: data.status || 'active',
-            phoneNumber: number,
+         ...data,
             list: new Types.ObjectId(list_id) || null,
-            voiceId: data.voiceId,
-            lastCallTime: new Date(),
-            completedContacts: new Types.ObjectId(contacts_id) || null,
             user: new Types.ObjectId(data.userId),
             tenandId
         });

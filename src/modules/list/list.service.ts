@@ -39,11 +39,7 @@ export class ListService {
   }
 
   async findByName(name: string) {
-    const data = await  this.listModel.findOne({ listName: name }).exec();
-    return {
-      data: data,
-      message: "List fetched successfully"
-    }
+    return await  this.listModel.findOne({ listName: name }).exec();
   }
 
   async findByUserId(userId: string) {

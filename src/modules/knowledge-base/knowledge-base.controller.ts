@@ -27,8 +27,4 @@ export class KnowledgeBaseController {
     return this.knowledgeBaseService.update(data );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.knowledgeBaseService.remove(+id);
-  }
 }
