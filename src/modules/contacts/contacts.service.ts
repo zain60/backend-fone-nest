@@ -78,8 +78,7 @@ export class ContactsService {
       message: "Records retrieved successfully"
     }
   }
-  
-  
+
   async findOne(id: string) {
     const data =  await  this.contactModel.findById(id).exec();
     return {
@@ -137,6 +136,41 @@ export class ContactsService {
       message:"contacts deleted sucessfully"
      }
   }
+
+  async getContactsByListId(listId: string) {
+    const contacts = await this.contactModel.aggregate([
+        {
+            $match: { listId: new Types.ObjectId(listId) }
+        },
+        {
+            $lookup: {
+                from: 'lists',
+                localField: 'listId',
+                foreignField: '_id',
+                as: 'listDetails'
+            }
+        },
+        {
+            $project: {
+                name: 1,
+                number: 1,
+                email: 1,
+                listName: { $arrayElemAt: ['$listDetails.listName', 0] },
+                createdAt: 1
+            }
+        },
+        {
+            $sort: { createdAt: -1 }
+        }
+    ]);
+
+    return {
+        data: contacts,
+        message: "Contacts retrieved successfully",
+        count: contacts.length
+    };
+}
+
 
 }
 

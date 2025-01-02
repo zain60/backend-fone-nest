@@ -19,20 +19,20 @@ export class Campaign {
     @Prop({ required: true, default: 'active', enum: ['active', 'inactive', 'completed'] })
     status: string;
 
+    @Prop({ required: true, default: 'immediate', enum: ['immediate', 'scheduled', 'recurring'] })
+    sending_type: string;
+
     @Prop({ required: true })
     phoneNumber: string;
+
+    @Prop({ required: false })
+    schedule:string
 
     @Prop({ type: Types.ObjectId, ref: 'List', required: false })
     list: Types.ObjectId;
 
     @Prop()
     voiceId: string;
-
-    @Prop({ type: Date })
-    lastCallTime: Date;
-    
-    @Prop({ type: Types.ObjectId, ref: 'Contact', required: true })
-    completedContacts: Types.ObjectId;
     
     @Prop({required:true})
     tenandId: string;

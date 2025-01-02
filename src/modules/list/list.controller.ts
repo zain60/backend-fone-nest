@@ -41,7 +41,6 @@ export class ListController {
 
   @Get('name/:name')
   findByName(@Param('name') name: string) {
-    console.log({name})
     return this.listService.findByName(name);
   }
 }
