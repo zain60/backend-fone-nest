@@ -7,6 +7,7 @@ import { ContactsService } from '../contacts/contacts.service';
 import { TwlioNumbersService } from '../twlio-numbers/twlio-numbers.service';
 import { VapiService } from 'src/libs/services/vapi.service';
 import { KnowledgeBaseService } from '../knowledge-base/knowledge-base.service';
+import { QueueService } from 'src/libs/services/QueueService.service';
 
 @Injectable()
 export class CampaignsService {
@@ -16,29 +17,14 @@ export class CampaignsService {
     private contactsService: ContactsService,
     private vapiService: VapiService,
     private knowledgeService: KnowledgeBaseService,
+    private queueService: QueueService,
     
     // private twilioService: TwlioNumbersService,
     ) {}
 
-    async createCampaign(tenandId:string,data:CreateCampaignDto) {
-        
-
-        console.log(data);
-        const list = await this.listService.findByName(data.ListName);
-        const list_id  = list._id;
-        const list_id_contacts = list._id.toString();
-
-        const contacts = await this.contactsService.getContactsByListId(list_id_contacts);
-        const contacts_number = contacts.data.map(contact => contact.number);
-        console.log(contacts_number);
-
-        const knowlege = this.knowledgeService.findByNumber(contacts_number[0]);
-        console.log({knowlege});
-        return
-
-        // this.vapiService.callCustomer()
-
-        if(data.type == 'inbound'){
+    async createCampaign(tenandId: string, data: CreateCampaignDto) {
+        if (data.type === 'inbound') {
+            // Set existing inbound campaigns to inactive
             await this.campaignModel.findOneAndUpdate(
                 { 
                     type: 'inbound',
@@ -47,20 +33,51 @@ export class CampaignsService {
                 },
                 { status: 'inactive' }
             );
-        }
-      
-        const createdCampaign = new this.campaignModel({
-         ...data,
-            list: new Types.ObjectId(list_id) || null,
-            user: new Types.ObjectId(data.userId),
-            tenandId
-        });
-        await createdCampaign.save();
-        return {
-            message: 'Campaign created successfully',
-            data: createdCampaign
+    
+            // Create new inbound campaign
+            const createdCampaign = new this.campaignModel({
+                ...data,
+                list: null,
+                user: new Types.ObjectId(data.userId),
+                tenandId
+            });
+            await createdCampaign.save();
+            return {
+                message: 'Inbound campaign created successfully',
+                data: createdCampaign
+            };
+        } else {
+            // Handle outbound campaign
+            const list = await this.listService.findByName(data.ListName);
+            const contacts = await this.contactsService.getContactsByListId(list._id.toString());
+            const knowlege = await this.knowledgeService.findByNumber(contacts.data[0].number);
+
+            console.log({knowlege});
+
+            contacts.data.forEach(async (contact) => {
+
+                await this.queueService.addCallJob(
+                    contact.number,
+                    knowlege.assitant_id,
+                    data.phoneNumber                );
+            });
+
+            // await this.vapiService.callCustomer(contacts_number[0], knowlege.assitant_id, data.phoneNumber);
+    
+            const createdCampaign = new this.campaignModel({
+                ...data,
+                list: new Types.ObjectId(list._id),
+                user: new Types.ObjectId(data.userId),
+                tenandId
+            });
+            await createdCampaign.save();
+            return {
+                message: 'Outbound campaign created successfully',
+                data: createdCampaign
+            };
         }
     }
+    
 
     async getCampaigns(userId: string, page: number = 1, limit: number = 10) {
         console.log(userId)

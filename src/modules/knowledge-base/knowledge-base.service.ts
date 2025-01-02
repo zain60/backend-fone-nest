@@ -13,68 +13,6 @@ export class KnowledgeBaseService {
     private twilioService: TwlioNumbersService,
 
   ) { }
-
-  async create(tenantId: string, data: CreateKnowledgeBaseDto) {
-    const number = await this.twilioService.findByNumber(data.number);
-     // Create knowledge base record
-     const knowledgeBase = await this.knowledgeBaseModel.create({
-      ...data,
-      caller_id: new Types.ObjectId(number._id),
-      user: new Types.ObjectId(data.userId),
-      tenantId
-    });
-
-    // Generate assistant name and get server URL
-    const assistantName = `${data.type}_${data.number.replace(/[^0-9]/g, '')}`;
-    const serverUrl = data.type.toLowerCase() === 'inbound' 
-      ? this.vapiService.inboundServerUrl 
-      : this.vapiService.outboundServerUrl;
-
-    // Create assistant with retry logic
-    let retryCount = 0;
-    let assistant: { id: string; };
-    while (retryCount < 3) {
-      try {
-        assistant = await this.vapiService.createAssistant(
-          assistantName,
-          data.first_message,
-          data.content,
-          data.voice_Id || '',
-          serverUrl,
-          10 * 60
-        );
-        break;
-      } catch (error) {
-        retryCount++;
-        if (retryCount === 3) throw error;
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-
-    // Handle inbound number configuration
-    if (data.type.toLowerCase() === 'inbound') {
-      if (!number) {
-        throw new NotFoundException(`Number ${data.number} not found`);
-      }
-
-      try {
-        if (!number.vopi_number_id) {
-          const vapiNumber = await this.vapiService.importNumber(data.number, assistant.id);
-          await this.twilioService.update_from_knowlegeBase(number.id, { 
-            vopi_number_id: vapiNumber.id 
-          });
-        } else {
-          await this.vapiService.assignAssistantToNumber(number.vopi_number_id, assistant.id);
-        }
-      } catch (error) {
-        await this.knowledgeBaseModel.findByIdAndDelete(knowledgeBase._id);
-        throw new Error(`Failed to configure number: ${error.message}`);
-      }
-    }
-
-    return knowledgeBase;
-  }
-
   async findAll() {
     return this.knowledgeBaseModel.find().exec()
   }
@@ -140,12 +78,102 @@ export class KnowledgeBaseService {
   }
 
   // create aservice to get record based on phoe umber
-  async findByNumber(number: string) {
+  async findByNumber(Phonenumber: string) {
+    // Normalize phone number by removing all non-digit characters except +
+    const number = '' + Phonenumber.replace(/[^\d+]/g, '');
     const numberData = await this.twilioService.findByNumber(number);
-    console.log(numberData);
-    // return this.knowledgeBaseModel.findOne({
-    //   callerId: numberData._id,
-    // }).exec
+    return this.knowledgeBaseModel.findOne({
+      caller_id: numberData._id,
+      type: 'outbound'
+    }).exec();
+  }
 
-}
+  async create(tenantId: string, data: CreateKnowledgeBaseDto) {
+    // Validate number existence upfront
+    const number = await this.twilioService.findByNumber(data.number);
+    if (data.type.toLowerCase() === 'inbound' && !number) {
+      throw new NotFoundException(`Number ${data.number} not found`);
+    }
+
+    // Create knowledge base record with initial data
+    const knowledgeBase = await this.knowledgeBaseModel.create({
+      ...data,
+      caller_id: new Types.ObjectId(number._id),
+      user: new Types.ObjectId(data.userId),
+      tenantId
+    });
+
+    try {
+      // Generate assistant name and get server URL
+      const assistantName = `${data.type}_${data.number.replace(/[^0-9]/g, '')}`;
+      const serverUrl = data.type.toLowerCase() === 'inbound'
+        ? this.vapiService.inboundServerUrl
+        : this.vapiService.outboundServerUrl;
+
+      // Create assistant with retry logic
+      const assistant = await this.createAssistantWithRetry(
+        assistantName,
+        data.first_message,
+        data.content,
+        data.voice_Id || '',
+        serverUrl
+      );
+
+      // Handle inbound configuration if needed
+      if (data.type.toLowerCase() === 'inbound') {
+        await this.configureInboundNumber(number, assistant.id);
+      }
+
+      // Update and return knowledge base with assistant ID
+      const KnowledgeData = await this.knowledgeBaseModel.findByIdAndUpdate(
+        knowledgeBase._id,
+        { assitant_id: assistant.id },
+        { new: true }
+      );
+
+      console.log(KnowledgeData)
+
+      return KnowledgeData
+
+    } catch (error) {
+      await this.knowledgeBaseModel.findByIdAndDelete(knowledgeBase._id);
+      throw new Error(`Operation failed: ${error.message}`);
+    }
+  }
+
+  private async createAssistantWithRetry(
+    assistantName: string,
+    firstMessage: string,
+    content: string,
+    voiceId: string,
+    serverUrl: string,
+    maxRetries = 3
+  ): Promise<{ id: string }> {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        return await this.vapiService.createAssistant(
+          assistantName,
+          firstMessage,
+          content,
+          voiceId,
+          serverUrl,
+          10 * 60
+        );
+      } catch (error) {
+        if (attempt === maxRetries) throw error;
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+    }
+  }
+
+  private async configureInboundNumber(number: any, assistantId: string): Promise<void> {
+    if (!number.vopi_number_id) {
+      const vapiNumber = await this.vapiService.importNumber(number.number, assistantId);
+      await this.twilioService.update_from_knowlegeBase(number.id, {
+        vopi_number_id: vapiNumber.id
+      });
+    } else {
+      await this.vapiService.assignAssistantToNumber(number.vopi_number_id, assistantId);
+    }
+  }
 }

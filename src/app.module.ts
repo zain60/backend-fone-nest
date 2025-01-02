@@ -16,6 +16,7 @@ import { TwlioNumbersModule } from './modules/twlio-numbers/twlio-numbers.module
 import { KnowledgeBaseModule } from './modules/knowledge-base/knowledge-base.module';
 import { SummarizerController } from './modules/ai-scrapping/ai-scraping.controller';
 import { SummarizerService } from './modules/ai-scrapping/ai-scraping.service';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -39,6 +40,12 @@ import { SummarizerService } from './modules/ai-scrapping/ai-scraping.service';
       uri: config.get('database.connectionString'),
     }),
     inject: [ConfigService],
+  }),
+  BullModule.forRoot({
+    redis: {
+      host: 'localhost',
+      port: 6379,
+    },
   }),
   AppointmentsModule,
   AuthModule,

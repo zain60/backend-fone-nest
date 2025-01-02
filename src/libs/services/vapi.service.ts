@@ -76,8 +76,15 @@ export class VapiService {
       serverMessages: ['end-of-call-report', 'conversation-update'],
       serverUrl: serverUrl,
       analysisPlan: {
-        structuredDataPlan: { schema: [{ type: 'string' }] },
-      },
+        structuredDataPlan: { 
+            schema: {
+                type: 'object',
+                properties: {
+                    summary: { type: 'string' }
+                }
+            }
+        }
+    }
     };
 
     try {
@@ -169,17 +176,20 @@ export class VapiService {
   }
 
   async callCustomer(
-    customerPhoneNumber: string,
+    to: string,
     assistantId: string,
-    callerPhoneNumber: string,
+    from: string,
   ): Promise<void> {
     const url = 'https://api.vapi.ai/call';
+    
+    console.log("JOb and QUeue activating ------------------->");
+    return 
 
     const payload = {
       assistantId: assistantId,
-      customer: { number: customerPhoneNumber },
+      customer: { number: to },
       phoneNumber: {
-        twilioPhoneNumber: callerPhoneNumber,
+        twilioPhoneNumber: from,
         twilioAccountSid: this.twilioSid,
         twilioAuthToken: this.twilioToken,
       },

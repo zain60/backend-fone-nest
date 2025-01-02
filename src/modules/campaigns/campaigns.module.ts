@@ -15,13 +15,18 @@ import { TwlioNumbersModule } from '../twlio-numbers/twlio-numbers.module';
 import { HttpModule } from '@nestjs/axios';
 import { VapiService } from 'src/libs/services/vapi.service';
 import { KnowledgeBaseModule } from '../knowledge-base/knowledge-base.module';
+import { QueueService } from 'src/libs/services/QueueService.service';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   controllers: [CampaignsController],
   providers: [CampaignsService,tenantConnectionProvider,
-    tenantModels.campaginModel,VapiService
+    tenantModels.campaginModel,VapiService,QueueService
   ],
   imports: [
+    BullModule.registerQueue({
+      name: 'call-queue',
+    }),
     TenantsModule,
     ListModule,
     ContactsModule,
